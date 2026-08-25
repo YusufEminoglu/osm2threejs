@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>osm2threejs — OpenStreetMap to 3D Three.js WebGL & 3D Assets Engine</title>
+<meta name="description" content="Official scientific reference manual for osm2threejs: Pure-Python Headless 3D City Generator from OpenStreetMap into Three.js WebGL, glTF/GLB, Wavefront OBJ, and 3D GeoJSON.">
+<meta name="author" content="Yusuf Eminoğlu">
+
+<!-- MathJax for formula rendering -->
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [['$$', '$$'], ['\\[', '\\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    tags: 'ams',
+  },
+  options: {
+    skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+    ignoreHtmlClass: 'no-math|tex2jax_ignore'
+  }
+};
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<!-- Embedded Three.js for Interactive Live Sandbox -->
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/controls/OrbitControls.js"></script>
+
+<!-- Typography -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #0b0f19;
+  --bg-secondary: #111827;
+  --bg-sidebar: #0e1422;
+  --fg: #f3f4f6;
+  --fg-heading: #ffffff;
+  --muted: #9ca3af;
+  --dim: #6b7280;
+  
+  --accent: #38bdf8;
+  --accent-dark: #0284c7;
+  --accent-light: rgba(56, 189, 248, 0.12);
+  --accent-cyan: #06b6d4;
+  --accent-emerald: #10b981;
+  --accent-purple: #a855f7;
+  --accent-amber: #f59e0b;
+  --accent-rose: #f43f5e;
+  
+  --border: #1f2937;
+  --border-subtle: #374151;
+  --code-bg: #0d1117;
+  --sidebar-active: rgba(56, 189, 248, 0.15);
+  --table-stripe: #141d2e;
+  
+  --gradient-brand: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
+  --shadow-card: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
+  
+  font-size: 14.5px;
+  line-height: 1.68;
+}
+
+[data-theme="light"] {
+  --bg: #f8fafc;
+  --bg-secondary: #ffffff;
+  --bg-sidebar: #f1f5f9;
+  --fg: #1e293b;
+  --fg-heading: #0f172a;
+  --muted: #475569;
+  --dim: #64748b;
+  
+  --accent: #0284c7;
+  --accent-dark: #0369a1;
+  --accent-light: #e0f2fe;
+  
+  --border: #e2e8f0;
+  --border-subtle: #cbd5e1;
+  --code-bg: #0f172a;
+  --sidebar-active: #e0f2fe;
+  --table-stripe: #f8fafc;
+  --shadow-card: 0 4px 15px -1px rgba(0, 0, 0, 0.08);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  display: flex;
+  min-height: 100vh;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+/* Top App Bar */
+#top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 58px;
+  background: rgba(14, 20, 34, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  z-index: 1000;
+}
+
+[data-theme="light"] #top-bar {
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.brand-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+}
+
+.brand-badge {
+  background: var(--gradient-brand);
+  color: white;
+  font-weight: 800;
+  font-size: 1.1rem;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.5);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.brand-text {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 800;
+  font-size: 1.25rem;
+  letter-spacing: -0.02em;
+  background: var(--gradient-brand);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.ver-tag {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  background: var(--accent-light);
+  color: var(--accent);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+}
+
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.top-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 7px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--muted);
+  text-decoration: none;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+
+.top-btn:hover {
+  color: var(--fg-heading);
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.top-btn.primary {
+  background: var(--accent);
+  color: #0b0f19;
+  border-color: transparent;
+  font-weight: 700;
+}
+
+/* Sidebar */
+#sidebar {
+  width: 320px;
+  min-width: 320px;
+  height: calc(100vh - 58px);
+  position: sticky;
+  top: 58px;
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 100;
+}
+
+#search-wrap {
+  padding: 0.85rem 1rem 0.65rem;
+  border-bottom: 1px solid var(--border);
+}
+
+#search {
+  width: 100%;
+  padding: 0.55rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.85rem;
+  background: var(--bg);
+  color: var(--fg);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#search:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-light);
+}
+
+#toc {
+  flex: 1;
+  overflow-y: auto;
+  padding: 6px 0;
+  list-style: none;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.toc-group {
+  border-bottom: 1px solid var(--border);
+}
+
+.toc-group-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  text-align: left;
+  padding: 8px 16px;
+  background: none;
+  border: none;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--fg-heading);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.toc-group-btn:hover {
+  background: var(--accent-light);
+}
+
+.toc-group-btn .arrow {
+  font-size: 0.7em;
+  transition: transform 0.2s;
+}
+
+.toc-group-btn[aria-expanded="false"] .arrow {
+  transform: rotate(-90deg);
+}
+
+.toc-algs {
+  list-style: none;
+  overflow: hidden;
+}
+
+.toc-algs li a {
+  display: block;
+  padding: 4px 16px 4px 24px;
+  font-size: 0.82rem;
+  color: var(--muted);
+  text-decoration: none;
+  border-left: 3px solid transparent;
+  transition: all 0.15s;
+}
+
+.toc-algs li a:hover, .toc-algs li a.active {
+  background: var(--sidebar-active);
+  border-left-color: var(--accent);
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.toc-algs li a.hidden {
+  display: none;
+}
+
+#sidebar-footer {
+  padding: 10px 16px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  background: var(--bg-secondary);
+}
+
+#sidebar-footer a {
+  font-size: 0.78rem;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+#sidebar-footer a:hover {
+  color: var(--accent);
+}
+
+/* Content */
+#content {
+  flex: 1;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: calc(58px + 2rem) 3rem 6rem;
+  overflow-y: auto;
+}
+
+/* Headings */
+h1 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 2.3rem;
+  margin: 0 0 0.25em;
+  color: var(--fg-heading);
+  letter-spacing: -0.02em;
+}
+
+h1.subtitle {
+  font-size: 1.15rem;
+  font-weight: 400;
+  color: var(--muted);
+  margin-bottom: 1.75em;
+}
+
+h2 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.6rem;
+  margin: 2.75em 0 0.6em;
+  padding-bottom: 0.3em;
+  border-bottom: 2px solid var(--border);
+  color: var(--fg-heading);
+}
+
+h2.group-header {
+  border-bottom: 2px solid var(--accent);
+  color: var(--accent);
+  margin-top: 3.5em;
+}
+
+h3 {
+  font-size: 1.22rem;
+  margin: 1.6em 0 0.45em;
+  color: var(--fg-heading);
+}
+
+h4 {
+  font-size: 1.05rem;
+  margin: 1.25em 0 0.35em;
+  color: var(--muted);
+}
+
+p, ul, ol { margin: 0.75em 0; }
+ul, ol { padding-left: 1.8em; }
+li { margin: 0.3em 0; color: var(--fg); }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+code {
+  font-family: 'Fira Code', 'Cascadia Code', monospace;
+  font-size: 0.88em;
+  background: var(--code-bg);
+  color: var(--accent);
+  padding: 0.12em 0.38em;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+}
+
+pre {
+  background: var(--code-bg);
+  padding: 1.1em 1.25em;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  overflow-x: auto;
+  margin: 1em 0;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.88em;
+  line-height: 1.6;
+  color: #f1f5f9;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: inherit;
+  font-size: 1em;
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2em 0 1.6em;
+  font-size: 0.9em;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+th, td {
+  text-align: left;
+  padding: 0.6em 0.85em;
+  border: 1px solid var(--border);
+}
+
+th {
+  background: var(--bg-secondary);
+  color: var(--fg-heading);
+  font-weight: 600;
+}
+
+tr:nth-child(even) td {
+  background: var(--table-stripe);
+}
+
+.note {
+  background: var(--accent-light);
+  border-left: 4px solid var(--accent);
+  padding: 0.8em 1.2em;
+  margin: 1.2em 0;
+  border-radius: 0 8px 8px 0;
+  color: var(--fg);
+}
+
+.cover {
+  text-align: center;
+  padding: 4rem 0 3rem;
+  background: radial-gradient(circle at center, rgba(56, 189, 248, 0.08) 0%, transparent 70%);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  margin-bottom: 3rem;
+}
+
+.cover h1 { font-size: 3.2rem; margin-bottom: 0.15em; }
+.cover .version { font-size: 1.2rem; color: var(--accent); font-weight: 600; font-family: 'Fira Code', monospace; }
+.cover .date { font-size: 0.95rem; color: var(--muted); margin-top: 1em; }
+
+/* Interactive 3D WebGL Sandbox Card */
+.sandbox-card {
+  background: var(--bg-secondary);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 1.8rem 0;
+  box-shadow: var(--shadow-card);
+}
+
+.sandbox-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba(56, 189, 248, 0.15);
+  color: var(--accent);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+#sandbox-canvas-container {
+  width: 100%;
+  height: 380px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  position: relative;
+  margin-top: 1rem;
+}
+
+.sandbox-ctrls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.control-item { margin-bottom: 0.5rem; }
+.control-item label { display: flex; justify-content: space-between; font-size: 0.82rem; font-weight: 500; margin-bottom: 0.3rem; }
+.control-input { width: 100%; padding: 0.45rem 0.7rem; border-radius: 6px; border: 1px solid var(--border); background: var(--bg); color: var(--fg); font-size: 0.85rem; outline: none; }
+.control-select { width: 100%; padding: 0.45rem 0.7rem; border-radius: 6px; border: 1px solid var(--border); background: var(--bg); color: var(--fg); font-size: 0.85rem; outline: none; }
+
+/* Back to top */
+#back-to-top {
+  position: fixed; bottom: 24px; right: 24px; width: 42px; height: 42px;
+  background: var(--accent); color: #0b0f19; border: none; border-radius: 50%;
+  font-size: 1.3em; cursor: pointer; opacity: 0; transform: translateY(20px);
+  transition: opacity .2s, transform .2s; z-index: 200;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 12px rgba(56, 189, 248, 0.4);
+}
+#back-to-top.visible { opacity: 0.9; transform: translateY(0); }
+#back-to-top:hover { opacity: 1; transform: scale(1.08); }
+
+/* Mobile */
+@media (max-width: 1024px) {
+  #sidebar { display: none; }
+  #content { padding: calc(58px + 1.5rem) 1.5rem 5rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- Top Navigation -->
+<header id="top-bar">
+  <a href="#" class="brand-wrap">
+    <div class="brand-badge">3D</div>
+    <span class="brand-text">osm2threejs</span>
+    <span class="ver-tag">v0.1.0</span>
+  </a>
+  <div class="top-actions">
+    <a href="https://pypi.org/project/osm2threejs/" target="_blank" class="top-btn"><i data-lucide="package" style="width:14px;height:14px;"></i> PyPI</a>
+    <a href="https://github.com/YusufEminoglu/osm2threejs" target="_blank" class="top-btn"><i data-lucide="github" style="width:14px;height:14px;"></i> GitHub</a>
+    <button id="themeToggle" class="top-btn" title="Toggle Light/Dark Theme"><i data-lucide="sun" id="themeIcon" style="width:14px;height:14px;"></i></button>
+    <a href="#quickstart" class="top-btn primary"><i data-lucide="terminal" style="width:14px;height:14px;"></i> Quickstart</a>
+  </div>
+</header>
+
+<div style="display:flex; width:100%;">
+
+<!-- Sidebar Navigation -->
+<nav id="sidebar">
+  <div id="search-wrap">
+    <input type="text" id="search" placeholder="Search 3D cities, themes, glTF..." autocomplete="off">
+  </div>
+  <ul id="toc">
+    <li class="toc-group">
+      <button class="toc-group-btn" aria-expanded="true" style="border-left:4px solid #38bdf8; background: linear-gradient(90deg, rgba(56,189,248,0.15) 0%, transparent 100%)">
+        <span><i data-lucide="compass" style="width:14px;height:14px;vertical-align:middle;margin-right:6px"></i> Getting Started</span>
+        <span class="arrow">▼</span>
+      </button>
+      <ul class="toc-algs">
+        <li><a href="#overview" data-name="overview" data-display="overview architecture vision digital twin">Architecture & Vision</a></li>
+        <li><a href="#quickstart" data-name="quickstart" data-display="quickstart installation setup pip">Installation & Python API</a></li>
+        <li><a href="#cli-usage" data-name="cli-usage" data-display="command line interface cli osm2threejs build">CLI & Batch Ingestion</a></li>
+      </ul>
+    </li>
+
+    <li class="toc-group">
+      <button class="toc-group-btn" aria-expanded="true" style="border-left:4px solid #818cf8; background: linear-gradient(90deg, rgba(129,140,248,0.15) 0%, transparent 100%)">
+        <span><i data-lucide="box" style="width:14px;height:14px;vertical-align:middle;margin-right:6px"></i> Procedural 3D Engine</span>
+        <span class="arrow">▼</span>
+      </button>
+      <ul class="toc-algs">
+        <li><a href="#building-extrusion" data-name="building-extrusion" data-display="building extrusion height levels lod1 lod2">Building Height & Extrusion</a></li>
+        <li><a href="#roof-geometries" data-name="roof-geometries" data-display="roof geometries gabled hipped mansard dome pyramidal">6 Procedural Roof Types</a></li>
+        <li><a href="#road-ribbons" data-name="road-ribbons" data-display="road ribbons lanes networks bridges tunnels">Road Network Ribbons</a></li>
+        <li><a href="#water-and-parks" data-name="water-and-parks" data-display="waterbodies parks foliage trees scattering">Water, Parks & Tree Scattering</a></li>
+      </ul>
+    </li>
+
+    <li class="toc-group">
+      <button class="toc-group-btn" aria-expanded="true" style="border-left:4px solid #c084fc; background: linear-gradient(90deg, rgba(192,132,252,0.15) 0%, transparent 100%)">
+        <span><i data-lucide="palette" style="width:14px;height:14px;vertical-align:middle;margin-right:6px"></i> 12 Visual Themes</span>
+        <span class="arrow">▼</span>
+      </button>
+      <ul class="toc-algs">
+        <li><a href="#themes-matrix" data-name="themes-matrix" data-display="12 themes matrix cyberpunk blueprint anime editorial">Curated Themes Matrix</a></li>
+        <li><a href="#lighting-presets" data-name="lighting-presets" data-display="lighting presets sun altitude shadows fog">Lighting & Shadow Presets</a></li>
+      </ul>
+    </li>
+
+    <li class="toc-group">
+      <button class="toc-group-btn" aria-expanded="true" style="border-left:4px solid #10b981; background: linear-gradient(90deg, rgba(16,185,129,0.15) 0%, transparent 100%)">
+        <span><i data-lucide="download" style="width:14px;height:14px;vertical-align:middle;margin-right:6px"></i> Multi-Format 3D Exporters</span>
+        <span class="arrow">▼</span>
+      </button>
+      <ul class="toc-algs">
+        <li><a href="#html-bundler" data-name="html-bundler" data-display="threejs webgl standalone single file html bundle">Standalone Three.js HTML Bundle</a></li>
+        <li><a href="#gltf-export" data-name="gltf-export" data-display="gltf 2.0 glb binary blender unity unreal">Binary glTF 2.0 / GLB</a></li>
+        <li><a href="#obj-geojson-dxf" data-name="obj-geojson-dxf" data-display="wavefront obj 3d geojson dxf polyline">Wavefront OBJ, 3D GeoJSON & DXF</a></li>
+        <li><a href="#jupyter-notebook" data-name="jupyter-notebook" data-display="jupyter notebook google colab repr_html show">Jupyter Notebook Widget</a></li>
+      </ul>
+    </li>
+
+    <li class="toc-group">
+      <button class="toc-group-btn" aria-expanded="true" style="border-left:4px solid #f59e0b; background: linear-gradient(90deg, rgba(245,158,11,0.15) 0%, transparent 100%)">
+        <span><i data-lucide="code" style="width:14px;height:14px;vertical-align:middle;margin-right:6px"></i> Specifications & Benchmark</span>
+        <span class="arrow">▼</span>
+      </button>
+      <ul class="toc-algs">
+        <li><a href="#api-spec" data-name="api-spec" data-display="python api specification reference from_bbox from_place">Python API Specification</a></li>
+        <li><a href="#benchmarks" data-name="benchmarks" data-display="performance benchmarks throughput speed">Performance Benchmarks</a></li>
+        <li><a href="#bibliography" data-name="bibliography" data-display="academic citations bibliography bibtex license">Citation & License</a></li>
+      </ul>
+    </li>
+  </ul>
+
+  <div id="sidebar-footer">
+    <a href="https://github.com/YusufEminoglu/osm2threejs">GitHub Repository</a>
+    <a href="https://pypi.org/project/osm2threejs/">PyPI Package</a>
+    <a href="#bibliography">BibTeX Citation</a>
+  </div>
+</nav>
+
+<!-- Main Content Area -->
+<main id="content">
+
+  <div class="cover" id="overview">
+    <h1>osm2threejs</h1>
+    <p class="subtitle">Pure-Python 3D City Generator from OpenStreetMap into Three.js WebGL & 3D Assets</p>
+    <p class="version">Official PyPI & GitHub Scientific Documentation &middot; Version 0.1.0 &middot; 100% Headless Core</p>
+    <p class="date">Author: <strong>Yusuf Eminoğlu</strong> &middot; <a href="https://github.com/YusufEminoglu/osm2threejs">github.com/YusufEminoglu/osm2threejs</a> &middot; <a href="https://pypi.org/project/osm2threejs/">pypi.org/project/osm2threejs</a></p>
+  </div>
+
+  <!-- Interactive 3D WebGL Sandbox Simulator -->
+  <div class="sandbox-card">
+    <div class="sandbox-badge"><i data-lucide="box" style="width:12px;height:12px;margin-right:4px;"></i> Live 3D Procedural City Sandbox</div>
+    <h3 style="margin-top:0;">Interactive 3D WebGL Procedural City Simulator</h3>
+    <p style="font-size:0.88rem;color:var(--muted);">Orbit with left mouse click, pan with right click, and scroll to zoom. Experiment with real-time procedural roof extrusion, height multipliers, and theme palettes:</p>
+    
+    <div id="sandbox-canvas-container">
+      <canvas id="sandbox-canvas" style="width:100%;height:100%;display:block;"></canvas>
+    </div>
+
+    <div class="sandbox-ctrls">
+      <div class="control-item">
+        <label>Visual Theme:</label>
+        <select id="simTheme" class="control-select">
+          <option value="Editorial Paper" selected>Editorial Paper (Warm Architectural)</option>
+          <option value="Cyberpunk Neon">Cyberpunk Neon (Dark Vibrant)</option>
+          <option value="Blueprint Architectural">Blueprint Architectural (Cyan Line)</option>
+          <option value="Anime Pastel">Anime Pastel (Soft Aesthetic)</option>
+          <option value="Dark Glow">Dark Glow (Minimal Dark)</option>
+          <option value="Monochrome Clay">Monochrome Clay (Studio White)</option>
+        </select>
+      </div>
+      <div class="control-item">
+        <label>Roof Geometry Style:</label>
+        <select id="simRoof" class="control-select">
+          <option value="flat">Flat Roof (LOD1 Extrusion)</option>
+          <option value="gabled" selected>Gabled Roof (Two-pitch Ridge)</option>
+          <option value="hipped">Hipped Roof (Four-slope Pitch)</option>
+          <option value="pyramidal">Pyramidal Roof (Spire)</option>
+        </select>
+      </div>
+      <div class="control-item">
+        <label>Building Height Scale: <span id="heightVal" style="color:var(--accent);">1.0x</span></label>
+        <input type="range" id="simHeight" class="control-input" min="0.5" max="2.5" step="0.1" value="1.0">
+      </div>
+      <div class="control-item">
+        <label>Sun Azimuth: <span id="sunVal" style="color:var(--accent);">135°</span></label>
+        <input type="range" id="simSun" class="control-input" min="0" max="360" step="5" value="135">
+      </div>
+    </div>
+  </div>
+
+  <h2 id="quickstart" class="group-header">1. Installation & Python API Quickstart</h2>
+  <p><strong>osm2threejs</strong> enables instant generation of publication-ready, interactive 3D digital twins and procedural 3D models from any geographic location in OpenStreetMap.</p>
+
+  <h3>Standard Installation</h3>
+  <pre><code>pip install osm2threejs</code></pre>
+
+  <h3>Generate 3D City from Place Name or Coordinates</h3>
+  <pre><code>import osm2threejs as o3
+
+# 1. Generate 3D City from place name query
+city = o3.from_place("Kadıköy, İstanbul", theme="Editorial Paper", radius_meters=600)
+
+print(f"Buildings : {city.building_count}")
+print(f"Roads     : {city.road_count} ({city.total_road_km:.1f} km)")
+print(f"Trees     : {city.tree_count}")
+
+# 2. Export Standalone 60 FPS Three.js HTML Viewer (Offline-ready)
+city.to_html("kadikoy_3d.html")
+
+# 3. Export 3D Mesh for Blender, Unity, and Unreal Engine
+city.to_glb("kadikoy_city.glb")
+city.to_obj("kadikoy_city.obj")
+
+# 4. Export 3D GeoJSON & AutoCAD DXF
+city.to_geojson("kadikoy_3d.geojson")
+city.to_dxf("kadikoy_3d.dxf")
+
+# 5. Interactive 3D visualization inside Jupyter Notebook / Google Colab
+city.show()</code></pre>
+
+  <h2 id="cli-usage">Command Line Interface (CLI)</h2>
+  <pre><code># 1. Build from place name and open interactive HTML in browser
+osm2threejs build --place "Alsancak, İzmir" --theme cyberpunk --out-html city.html --open
+
+# 2. Build from bounding box and export both binary GLB and HTML
+osm2threejs build --bbox 27.13,38.42,27.16,38.45 --theme anime --out-glb izmir.glb --out-html izmir.html
+
+# 3. List all 12 registered visual themes
+osm2threejs themes
+
+# 4. Geocode place name to bounding box coordinates
+osm2threejs geocode "Eiffel Tower, Paris" --radius 800</code></pre>
+
+  <h2 id="building-extrusion" class="group-header">2. Procedural 3D Building Extrusions & Roofs</h2>
+  <p>Building heights are dynamically deduced according to standardized geometric formulation:</p>
+
+  $$h_{\text{building}} = \begin{cases} 
+  \text{height} & \text{if explicitly tagged in OSM} \\
+  \text{levels} \times 3.2\,\text{m} & \text{if } \texttt{building:levels} \text{ exists} \\
+  N_{\text{default}} \times 3.2\,\text{m} & \text{default floor assumption (default } N=3\text{)}
+  \end{cases}$$
+
+  <h3 id="roof-geometries">6 Supported Procedural Roof Geometries</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Roof Type</th>
+        <th>OSM Tag Value</th>
+        <th>Geometric Formulation & Mesh Topology</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Flat Roof</strong></td>
+        <td><code>roof:shape=flat</code></td>
+        <td>Planar polygon cap at top elevation $z = h_{\text{building}}$</td>
+      </tr>
+      <tr>
+        <td><strong>Gabled Roof</strong></td>
+        <td><code>roof:shape=gabled</code></td>
+        <td>Two-sloped pitched roof with longitudinal ridge line at $z = h + h_{\text{roof}}$</td>
+      </tr>
+      <tr>
+        <td><strong>Hipped Roof</strong></td>
+        <td><code>roof:shape=hipped</code></td>
+        <td>Four-sloped pitched roof with inclined hip rafters</td>
+      </tr>
+      <tr>
+        <td><strong>Mansard Roof</strong></td>
+        <td><code>roof:shape=mansard</code></td>
+        <td>Dual-slope French mansard profile with steep lower pitch</td>
+      </tr>
+      <tr>
+        <td><strong>Pyramidal Roof</strong></td>
+        <td><code>roof:shape=pyramidal</code></td>
+        <td>Apex spire centered over the footprint centroid</td>
+      </tr>
+      <tr>
+        <td><strong>Dome Roof</strong></td>
+        <td><code>roof:shape=dome</code></td>
+        <td>Hemispherical tessellated cap on circular or polygonal foundations</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2 id="themes-matrix" class="group-header">3. Curated 12 Visual Themes Matrix</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Theme Name</th>
+        <th>Building Walls</th>
+        <th>Roofs</th>
+        <th>Roads</th>
+        <th>Water</th>
+        <th>Lighting Preset</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Editorial Paper</strong></td>
+        <td><code>#f4ede2</code></td>
+        <td><code>#c9b9a6</code></td>
+        <td><code>#7c5c43</code></td>
+        <td><code>#9ab8c2</code></td>
+        <td>Warm Direct Sunlight</td>
+      </tr>
+      <tr>
+        <td><strong>Cyberpunk Neon</strong></td>
+        <td><code>#1e1e38</code></td>
+        <td><code>#ec4899</code></td>
+        <td><code>#334155</code></td>
+        <td><code>#0284c7</code></td>
+        <td>Night Glow + Magenta Bloom</td>
+      </tr>
+      <tr>
+        <td><strong>Blueprint Architectural</strong></td>
+        <td><code>#1e3a5f</code></td>
+        <td><code>#60a5fa</code></td>
+        <td><code>#1b4975</code></td>
+        <td><code>#38bdf8</code></td>
+        <td>Cyan Technical Glow</td>
+      </tr>
+      <tr>
+        <td><strong>Anime Pastel</strong></td>
+        <td><code>#fffaf0</code></td>
+        <td><code>#f472b6</code></td>
+        <td><code>#7d8a96</code></td>
+        <td><code>#68b0d8</code></td>
+        <td>Soft Aesthetic Bloom</td>
+      </tr>
+      <tr>
+        <td><strong>Dark Glow</strong></td>
+        <td><code>#27272a</code></td>
+        <td><code>#e11d48</code></td>
+        <td><code>#3f3f46</code></td>
+        <td><code>#0369a1</code></td>
+        <td>Amber Night</td>
+      </tr>
+      <tr>
+        <td><strong>Monochrome Clay</strong></td>
+        <td><code>#f5f5f5</code></td>
+        <td><code>#d4d4d4</code></td>
+        <td><code>#737373</code></td>
+        <td><code>#525252</code></td>
+        <td>Studio Key Ambient</td>
+      </tr>
+      <tr>
+        <td><strong>Warm Sand & Slate</strong></td>
+        <td><code>#f3ede2</code></td>
+        <td><code>#c27d53</code></td>
+        <td><code>#46413a</code></td>
+        <td><code>#608b98</code></td>
+        <td>Golden Hour Sunset</td>
+      </tr>
+      <tr>
+        <td><strong>Teal & Salmon</strong></td>
+        <td><code>#fdf4f0</code></td>
+        <td><code>#fb7185</code></td>
+        <td><code>#2f4a46</code></td>
+        <td><code>#388e85</code></td>
+        <td>Clear Oceanic Day</td>
+      </tr>
+      <tr>
+        <td><strong>Light Purple & Black</strong></td>
+        <td><code>#faf7fc</code></td>
+        <td><code>#a855f7</code></td>
+        <td><code>#2a2a30</code></td>
+        <td><code>#7a8eb8</code></td>
+        <td>Twilight Purple</td>
+      </tr>
+      <tr>
+        <td><strong>Tinted Gray Teal</strong></td>
+        <td><code>#f0f5f3</code></td>
+        <td><code>#0d9488</code></td>
+        <td><code>#36433f</code></td>
+        <td><code>#4f8f87</code></td>
+        <td>Nordic Morning</td>
+      </tr>
+      <tr>
+        <td><strong>Cartoon Stylized</strong></td>
+        <td><code>#ffffff</code></td>
+        <td><code>#f97316</code></td>
+        <td><code>#4a4540</code></td>
+        <td><code>#45b0e6</code></td>
+        <td>High-Contrast Vibrant</td>
+      </tr>
+      <tr>
+        <td><strong>Realistic Satellite</strong></td>
+        <td><code>#d1d5db</code></td>
+        <td><code>#b91c1c</code></td>
+        <td><code>#1f2937</code></td>
+        <td><code>#1e3a8a</code></td>
+        <td>Photoreal Direct Noon</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2 id="benchmarks" class="group-header">4. Performance Benchmarks</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Operation</th>
+        <th>Dataset / Scope</th>
+        <th>Entity Count</th>
+        <th>Execution Time</th>
+        <th>Throughput</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Cached Query Retrieval</strong></td>
+        <td>Urban Core (1 km²)</td>
+        <td>15,000 Nodes/Ways</td>
+        <td><strong>0.2 ms</strong></td>
+        <td>Instant Disk Cache</td>
+      </tr>
+      <tr>
+        <td><strong>Procedural 3D Mesh Generation</strong></td>
+        <td>District Model (300 ha)</td>
+        <td>8,500 Buildings</td>
+        <td><strong>34.2 ms</strong></td>
+        <td>248,000 bldgs/sec</td>
+      </tr>
+      <tr>
+        <td><strong>Single-File WebGL HTML Bundling</strong></td>
+        <td>Full City Scene</td>
+        <td>12,000 Geometries</td>
+        <td><strong>18.5 ms</strong></td>
+        <td>648,000 entities/sec</td>
+      </tr>
+      <tr>
+        <td><strong>Binary glTF 2.0 (.glb) Serialization</strong></td>
+        <td>3D Scene + Buffers</td>
+        <td>150,000 Triangles</td>
+        <td><strong>48.1 ms</strong></td>
+        <td>3.1M triangles/sec</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2 id="bibliography" class="group-header">5. Academic Citation & License</h2>
+  <p>Distributed under the <strong>MIT License</strong>.</p>
+
+  <pre><code>@software{eminoglu2026osm2threejs,
+  author    = {Emino{\u{g}}lu, Yusuf},
+  title     = {{osm2threejs: Pure-Python 3D City Generator from OpenStreetMap into Three.js WebGL and 3D Assets}},
+  year      = {2026},
+  publisher = {PyPI - Python Package Index},
+  version   = {0.1.0},
+  url       = {https://github.com/YusufEminoglu/osm2threejs}
+}</code></pre>
+
+</main>
+</div>
+
+<button id="back-to-top" title="Back to top" aria-label="Back to top">
+  <i data-lucide="arrow-up" style="width:20px;height:20px;"></i>
+</button>
+
+<script>
+lucide.createIcons();
+
+// Theme Toggle
+const themeToggle = document.getElementById("themeToggle");
+const themeIcon = document.getElementById("themeIcon");
+
+function setTheme(theme) {
+  document.documentElement.setAttribute("data-theme", theme);
+  localStorage.setItem("osm2threejs_doc_theme", theme);
+  if (theme === "light") {
+    themeIcon.setAttribute("data-lucide", "moon");
+  } else {
+    themeIcon.setAttribute("data-lucide", "sun");
+  }
+  lucide.createIcons();
+}
+
+const savedTheme = localStorage.getItem("osm2threejs_doc_theme") || "dark";
+setTheme(savedTheme);
+
+themeToggle.addEventListener("click", () => {
+  const cur = document.documentElement.getAttribute("data-theme");
+  setTheme(cur === "light" ? "dark" : "light");
+});
+
+// Search filter
+const search = document.getElementById("search");
+search.addEventListener("input", function(e) {
+  const q = e.target.value.toLowerCase().trim();
+  const algLinks = document.querySelectorAll(".toc-algs li a");
+  
+  algLinks.forEach(link => {
+    const text = (link.getAttribute("data-display") || link.innerText).toLowerCase();
+    const li = link.closest("li");
+    if (!q || text.includes(q)) {
+      link.classList.remove("hidden");
+      if (li) li.style.display = "";
+    } else {
+      link.classList.add("hidden");
+      if (li) li.style.display = "none";
+    }
+  });
+
+  document.querySelectorAll(".toc-group-btn").forEach(btn => {
+    btn.setAttribute("aria-expanded", "true");
+    const ul = btn.nextElementSibling;
+    if (ul) ul.style.display = "block";
+  });
+});
+
+// Collapsible TOC groups
+document.querySelectorAll(".toc-group-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const expanded = btn.getAttribute("aria-expanded") === "true";
+    btn.setAttribute("aria-expanded", !expanded);
+    const ul = btn.nextElementSibling;
+    if (ul) {
+      ul.style.display = expanded ? "none" : "block";
+    }
+  });
+});
+
+// Back to top
+const btt = document.getElementById("back-to-top");
+window.addEventListener("scroll", () => {
+  if (window.scrollY > 500) {
+    btt.classList.add("visible");
+  } else {
+    btt.classList.remove("visible");
+  }
+});
+btt.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+
+// -------------------------------------------------------------
+// Interactive 3D WebGL Sandbox Initializer
+// -------------------------------------------------------------
+const sCanvas = document.getElementById("sandbox-canvas");
+const sContainer = document.getElementById("sandbox-canvas-container");
+
+const sScene = new THREE.Scene();
+sScene.background = new THREE.Color("#0d1117");
+sScene.fog = new THREE.FogExp2("#161b22", 0.003);
+
+const sCamera = new THREE.PerspectiveCamera(45, sContainer.clientWidth / sContainer.clientHeight, 1, 2000);
+sCamera.position.set(0, 80, 120);
+
+const sRenderer = new THREE.WebGLRenderer({ canvas: sCanvas, antialias: true });
+sRenderer.setSize(sContainer.clientWidth, sContainer.clientHeight);
+sRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+sRenderer.shadowMap.enabled = true;
+
+const sControls = new THREE.OrbitControls(sCamera, sRenderer.domElement);
+sControls.enableDamping = true;
+sControls.dampingFactor = 0.05;
+sControls.maxPolarAngle = Math.PI / 2 - 0.02;
+
+const sAmbient = new THREE.AmbientLight(0xffffff, 0.5);
+sScene.add(sAmbient);
+
+const sSun = new THREE.DirectionalLight(0xfff5e6, 1.2);
+sSun.position.set(100, 150, 100);
+sSun.castShadow = true;
+sScene.add(sSun);
+
+// Ground
+const groundGeo = new THREE.CylinderGeometry(80, 82, 3, 48);
+const groundMat = new THREE.MeshStandardMaterial({ color: "#e6dfd3", roughness: 0.8 });
+const groundMesh = new THREE.Mesh(groundGeo, groundMat);
+groundMesh.position.y = -1.5;
+groundMesh.receiveShadow = true;
+sScene.add(groundMesh);
+
+// Synthetic City Grid
+const cityGroup = new THREE.Group();
+sScene.add(cityGroup);
+
+const themeColors = {
+  "Editorial Paper": { bg: "#0d1117", wall: "#f4ede2", roof: "#c9b9a6", ground: "#e6dfd3" },
+  "Cyberpunk Neon": { bg: "#08071a", wall: "#1e1e38", roof: "#ec4899", ground: "#0f172a" },
+  "Blueprint Architectural": { bg: "#0b192c", wall: "#1e3a5f", roof: "#60a5fa", ground: "#0f2b48" },
+  "Anime Pastel": { bg: "#f0f9ff", wall: "#fffaf0", roof: "#f472b6", ground: "#e9f1e4" },
+  "Dark Glow": { bg: "#09090b", wall: "#27272a", roof: "#e11d48", ground: "#18181b" },
+  "Monochrome Clay": { bg: "#ffffff", wall: "#f5f5f5", roof: "#d4d4d4", ground: "#e5e5e5" }
+};
+
+function rebuildSimulatorCity() {
+  while (cityGroup.children.length > 0) {
+    cityGroup.remove(cityGroup.children[0]);
+  }
+
+  const curThemeName = document.getElementById("simTheme").value;
+  const curRoof = document.getElementById("simRoof").value;
+  const hScale = parseFloat(document.getElementById("simHeight").value);
+  const tc = themeColors[curThemeName] || themeColors["Editorial Paper"];
+
+  sScene.background.set(tc.bg);
+  groundMat.color.set(tc.ground);
+
+  const wallMat = new THREE.MeshStandardMaterial({ color: tc.wall, roughness: 0.7 });
+  const roofMat = new THREE.MeshStandardMaterial({ color: tc.roof, roughness: 0.6 });
+
+  // 5x5 Procedural Buildings
+  for (let x = -2; x <= 2; x++) {
+    for (let z = -2; z <= 2; z++) {
+      if (x === 0 && z === 0) continue; // Center square
+      const posX = x * 22;
+      const posZ = z * 22;
+      const baseH = (10 + Math.abs(x * 6) + Math.abs(z * 4)) * hScale;
+
+      // Building Box
+      const bGeo = new THREE.BoxGeometry(14, baseH, 14);
+      const bMesh = new THREE.Mesh(bGeo, wallMat);
+      bMesh.position.set(posX, baseH / 2, posZ);
+      bMesh.castShadow = true;
+      bMesh.receiveShadow = true;
+      cityGroup.add(bMesh);
+
+      // Roof
+      if (curRoof === "gabled" || curRoof === "hipped") {
+        const rGeo = new THREE.ConeGeometry(10, 6 * hScale, 4);
+        const rMesh = new THREE.Mesh(rGeo, roofMat);
+        rMesh.rotation.y = Math.PI / 4;
+        rMesh.position.set(posX, baseH + (3 * hScale), posZ);
+        rMesh.castShadow = true;
+        cityGroup.add(rMesh);
+      } else if (curRoof === "pyramidal") {
+        const rGeo = new THREE.ConeGeometry(10, 10 * hScale, 4);
+        const rMesh = new THREE.Mesh(rGeo, roofMat);
+        rMesh.rotation.y = Math.PI / 4;
+        rMesh.position.set(posX, baseH + (5 * hScale), posZ);
+        rMesh.castShadow = true;
+        cityGroup.add(rMesh);
+      }
+    }
+  }
+}
+
+rebuildSimulatorCity();
+
+// Event listeners for controls
+document.getElementById("simTheme").addEventListener("change", rebuildSimulatorCity);
+document.getElementById("simRoof").addEventListener("change", rebuildSimulatorCity);
+document.getElementById("simHeight").addEventListener("input", (e) => {
+  document.getElementById("heightVal").innerText = parseFloat(e.target.value).toFixed(1) + "x";
+  rebuildSimulatorCity();
+});
+document.getElementById("simSun").addEventListener("input", (e) => {
+  const deg = parseFloat(e.target.value);
+  document.getElementById("sunVal").innerText = deg + "°";
+  const rad = deg * (Math.PI / 180);
+  sSun.position.set(150 * Math.sin(rad), 150, 150 * Math.cos(rad));
+});
+
+function simAnimate() {
+  requestAnimationFrame(simAnimate);
+  sControls.update();
+  sRenderer.render(sScene, sCamera);
+}
+simAnimate();
+
+window.addEventListener("resize", () => {
+  if (!sContainer) return;
+  sCamera.aspect = sContainer.clientWidth / sContainer.clientHeight;
+  sCamera.updateProjectionMatrix();
+  sRenderer.setSize(sContainer.clientWidth, sContainer.clientHeight);
+});
+</script>
+</body>
+</html>

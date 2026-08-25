@@ -1,0 +1,104 @@
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "osm2threejs"
+version = "0.1.0"
+authors = [
+    { name = "Yusuf Eminoğlu", email = "yusufeminoglu@gmail.com" }
+]
+description = "Headless 3D City Generator from OpenStreetMap into Three.js WebGL and 3D Assets."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.9"
+keywords = [
+    "osm",
+    "openstreetmap",
+    "threejs",
+    "webgl",
+    "3d",
+    "city",
+    "gis",
+    "digital-twin",
+    "gltf",
+    "glb",
+    "procedural",
+    "buildings",
+    "urban-planning",
+    "headless",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering :: GIS",
+    "Topic :: Scientific/Engineering :: Visualization",
+    "Topic :: Multimedia :: Graphics :: 3D Modeling",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+]
+dependencies = []
+
+[project.optional-dependencies]
+geo = [
+    "shapely>=2.0.0",
+    "geopandas>=0.12.0",
+]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "ruff>=0.1.0",
+    "mypy>=1.0.0",
+    "build>=1.0.0",
+    "twine>=5.0.0",
+]
+
+[project.scripts]
+osm2threejs = "osm2threejs.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/YusufEminoglu/osm2threejs"
+Repository = "https://github.com/YusufEminoglu/osm2threejs"
+Issues = "https://github.com/YusufEminoglu/osm2threejs/issues"
+Documentation = "https://yusufeminoglu.github.io/osm2threejs/"
+Changelog = "https://github.com/YusufEminoglu/osm2threejs/blob/main/CHANGELOG.md"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+osm2threejs = ["py.typed"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+exclude = [
+    ".venv",
+    "build",
+    "dist",
+]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "C4"]
+ignore = ["E501"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.coverage.run]
+source = ["osm2threejs"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 70
