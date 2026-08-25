@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>osm2threejs — OpenStreetMap to 3D Three.js WebGL & 3D Assets Engine</title>
-<meta name="description" content="Official scientific reference manual for osm2threejs: Pure-Python Headless 3D City Generator from OpenStreetMap into Three.js WebGL, glTF/GLB, Wavefront OBJ, and 3D GeoJSON.">
+<title>osm2threejs — Pure-Python 3D City Generator from OpenStreetMap into Three.js WebGL & 3D Assets</title>
+<meta name="description" content="Official scientific reference manual for osm2threejs: Pure-Python Headless 3D City Generator from OpenStreetMap into Three.js WebGL, glTF/GLB, Wavefront OBJ, AutoCAD DXF, and 3D GeoJSON.">
 <meta name="author" content="Yusuf Eminoğlu">
 
 <!-- MathJax for formula rendering -->
@@ -43,7 +43,7 @@ window.MathJax = {
   --fg-heading: #ffffff;
   --muted: #9ca3af;
   --dim: #6b7280;
-  
+
   --accent: #38bdf8;
   --accent-dark: #0284c7;
   --accent-light: rgba(56, 189, 248, 0.12);
@@ -52,16 +52,16 @@ window.MathJax = {
   --accent-purple: #a855f7;
   --accent-amber: #f59e0b;
   --accent-rose: #f43f5e;
-  
+
   --border: #1f2937;
   --border-subtle: #374151;
   --code-bg: #0d1117;
   --sidebar-active: rgba(56, 189, 248, 0.15);
   --table-stripe: #141d2e;
-  
+
   --gradient-brand: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
   --shadow-card: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
-  
+
   font-size: 14.5px;
   line-height: 1.68;
 }
@@ -74,11 +74,11 @@ window.MathJax = {
   --fg-heading: #0f172a;
   --muted: #475569;
   --dim: #64748b;
-  
+
   --accent: #0284c7;
   --accent-dark: #0369a1;
   --accent-light: #e0f2fe;
-  
+
   --border: #e2e8f0;
   --border-subtle: #cbd5e1;
   --code-bg: #0f172a;
@@ -448,16 +448,37 @@ tr:nth-child(even) td {
 
 .cover {
   text-align: center;
-  padding: 4rem 0 3rem;
+  padding: 3rem 1.5rem 2.5rem;
   background: radial-gradient(circle at center, rgba(56, 189, 248, 0.08) 0%, transparent 70%);
   border-radius: 16px;
   border: 1px solid var(--border);
-  margin-bottom: 3rem;
+  margin-bottom: 2.5rem;
 }
 
-.cover h1 { font-size: 3.2rem; margin-bottom: 0.15em; }
-.cover .version { font-size: 1.2rem; color: var(--accent); font-weight: 600; font-family: 'Fira Code', monospace; }
-.cover .date { font-size: 0.95rem; color: var(--muted); margin-top: 1em; }
+.cover h1 { font-size: 3rem; margin-bottom: 0.15em; }
+.cover .version { font-size: 1.1rem; color: var(--accent); font-weight: 600; font-family: 'Fira Code', monospace; }
+.cover .date { font-size: 0.9rem; color: var(--muted); margin-top: 0.8em; }
+
+/* Illustration Containers */
+.figure-wrap {
+  margin: 1.8rem 0;
+  text-align: center;
+}
+
+.figure-img {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-card);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.figure-caption {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-top: 0.6rem;
+  font-style: italic;
+}
 
 /* Interactive 3D WebGL Sandbox Card */
 .sandbox-card {
@@ -465,7 +486,7 @@ tr:nth-child(even) td {
   border: 1px solid rgba(56, 189, 248, 0.3);
   border-radius: 12px;
   padding: 1.5rem;
-  margin: 1.8rem 0;
+  margin: 2rem 0;
   box-shadow: var(--shadow-card);
 }
 
@@ -486,7 +507,7 @@ tr:nth-child(even) td {
 
 #sandbox-canvas-container {
   width: 100%;
-  height: 380px;
+  height: 400px;
   border-radius: 8px;
   border: 1px solid var(--border);
   overflow: hidden;
@@ -505,6 +526,17 @@ tr:nth-child(even) td {
 .control-item label { display: flex; justify-content: space-between; font-size: 0.82rem; font-weight: 500; margin-bottom: 0.3rem; }
 .control-input { width: 100%; padding: 0.45rem 0.7rem; border-radius: 6px; border: 1px solid var(--border); background: var(--bg); color: var(--fg); font-size: 0.85rem; outline: none; }
 .control-select { width: 100%; padding: 0.45rem 0.7rem; border-radius: 6px; border: 1px solid var(--border); background: var(--bg); color: var(--fg); font-size: 0.85rem; outline: none; }
+
+/* Swatch Tag */
+.swatch {
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  border-radius: 3px;
+  margin-right: 6px;
+  vertical-align: middle;
+  border: 1px solid rgba(0,0,0,0.2);
+}
 
 /* Back to top */
 #back-to-top {
@@ -556,9 +588,10 @@ tr:nth-child(even) td {
         <span class="arrow">▼</span>
       </button>
       <ul class="toc-algs">
-        <li><a href="#overview" data-name="overview" data-display="overview architecture vision digital twin">Architecture & Vision</a></li>
-        <li><a href="#quickstart" data-name="quickstart" data-display="quickstart installation setup pip">Installation & Python API</a></li>
-        <li><a href="#cli-usage" data-name="cli-usage" data-display="command line interface cli osm2threejs build">CLI & Batch Ingestion</a></li>
+        <li><a href="#overview" data-name="overview" data-display="overview architecture vision digital twin hero">Architecture & Vision</a></li>
+        <li><a href="#pipeline-workflow" data-name="pipeline-workflow" data-display="pipeline overpass geojson threejs gltf workflow">Resilient 4-Step Pipeline</a></li>
+        <li><a href="#quickstart" data-name="quickstart" data-display="quickstart installation setup pip from_place from_bbox">Installation & Python API</a></li>
+        <li><a href="#cli-usage" data-name="cli-usage" data-display="command line interface cli osm2threejs build terminal">CLI & Terminal Ingestion</a></li>
       </ul>
     </li>
 
@@ -568,10 +601,10 @@ tr:nth-child(even) td {
         <span class="arrow">▼</span>
       </button>
       <ul class="toc-algs">
-        <li><a href="#building-extrusion" data-name="building-extrusion" data-display="building extrusion height levels lod1 lod2">Building Height & Extrusion</a></li>
-        <li><a href="#roof-geometries" data-name="roof-geometries" data-display="roof geometries gabled hipped mansard dome pyramidal">6 Procedural Roof Types</a></li>
-        <li><a href="#road-ribbons" data-name="road-ribbons" data-display="road ribbons lanes networks bridges tunnels">Road Network Ribbons</a></li>
-        <li><a href="#water-and-parks" data-name="water-and-parks" data-display="waterbodies parks foliage trees scattering">Water, Parks & Tree Scattering</a></li>
+        <li><a href="#building-extrusion" data-name="building-extrusion" data-display="building extrusion height levels lod1 lod2 formulas">Building Height & Extrusions</a></li>
+        <li><a href="#roof-geometries" data-name="roof-geometries" data-display="roof geometries gabled hipped mansard dome pyramidal flat">6 Procedural Roof Geometries</a></li>
+        <li><a href="#road-ribbons" data-name="road-ribbons" data-display="road ribbons lanes networks bridges tunnels sidewalks">Road Network Ribbons & Hierarchy</a></li>
+        <li><a href="#water-and-parks" data-name="water-and-parks" data-display="waterbodies parks foliage trees scattering poisson">Water, Greens & Tree Scattering</a></li>
       </ul>
     </li>
 
@@ -581,8 +614,18 @@ tr:nth-child(even) td {
         <span class="arrow">▼</span>
       </button>
       <ul class="toc-algs">
-        <li><a href="#themes-matrix" data-name="themes-matrix" data-display="12 themes matrix cyberpunk blueprint anime editorial">Curated Themes Matrix</a></li>
-        <li><a href="#lighting-presets" data-name="lighting-presets" data-display="lighting presets sun altitude shadows fog">Lighting & Shadow Presets</a></li>
+        <li><a href="#themes-matrix" data-name="themes-matrix" data-display="12 themes matrix cyberpunk blueprint anime editorial dusk looks gallery">Curated 12 Themes Matrix</a></li>
+        <li><a href="#lighting-presets" data-name="lighting-presets" data-display="lighting presets sun altitude shadows fog atmosphere">Lighting & Sunlight Presets</a></li>
+      </ul>
+    </li>
+
+    <li class="toc-group">
+      <button class="toc-group-btn" aria-expanded="true" style="border-left:4px solid #f43f5e; background: linear-gradient(90deg, rgba(244,63,94,0.15) 0%, transparent 100%)">
+        <span><i data-lucide="user" style="width:14px;height:14px;vertical-align:middle;margin-right:6px"></i> First-Person Walk Mode</span>
+        <span class="arrow">▼</span>
+      </button>
+      <ul class="toc-algs">
+        <li><a href="#walk-mode" data-name="walk-mode" data-display="walk mode first person pedestrian eye height wasd collision">Pedestrian Physics & Navigation</a></li>
       </ul>
     </li>
 
@@ -593,9 +636,9 @@ tr:nth-child(even) td {
       </button>
       <ul class="toc-algs">
         <li><a href="#html-bundler" data-name="html-bundler" data-display="threejs webgl standalone single file html bundle">Standalone Three.js HTML Bundle</a></li>
-        <li><a href="#gltf-export" data-name="gltf-export" data-display="gltf 2.0 glb binary blender unity unreal">Binary glTF 2.0 / GLB</a></li>
-        <li><a href="#obj-geojson-dxf" data-name="obj-geojson-dxf" data-display="wavefront obj 3d geojson dxf polyline">Wavefront OBJ, 3D GeoJSON & DXF</a></li>
-        <li><a href="#jupyter-notebook" data-name="jupyter-notebook" data-display="jupyter notebook google colab repr_html show">Jupyter Notebook Widget</a></li>
+        <li><a href="#gltf-export" data-name="gltf-export" data-display="gltf 2.0 glb binary blender unity unreal webxr">Binary glTF 2.0 / GLB</a></li>
+        <li><a href="#obj-geojson-dxf" data-name="obj-geojson-dxf" data-display="wavefront obj 3d geojson dxf polyline autocad">Wavefront OBJ, 3D GeoJSON & DXF</a></li>
+        <li><a href="#jupyter-notebook" data-name="jupyter-notebook" data-display="jupyter notebook google colab repr_html show widget">Jupyter Notebook & Colab Widget</a></li>
       </ul>
     </li>
 
@@ -605,9 +648,9 @@ tr:nth-child(even) td {
         <span class="arrow">▼</span>
       </button>
       <ul class="toc-algs">
-        <li><a href="#api-spec" data-name="api-spec" data-display="python api specification reference from_bbox from_place">Python API Specification</a></li>
-        <li><a href="#benchmarks" data-name="benchmarks" data-display="performance benchmarks throughput speed">Performance Benchmarks</a></li>
-        <li><a href="#bibliography" data-name="bibliography" data-display="academic citations bibliography bibtex license">Citation & License</a></li>
+        <li><a href="#api-spec" data-name="api-spec" data-display="python api specification reference from_bbox from_place citymodel">Python API Reference</a></li>
+        <li><a href="#benchmarks" data-name="benchmarks" data-display="performance benchmarks throughput speed 60fps">Performance Benchmarks</a></li>
+        <li><a href="#bibliography" data-name="bibliography" data-display="academic citations bibliography bibtex license mit">Citation & License</a></li>
       </ul>
     </li>
   </ul>
@@ -624,17 +667,23 @@ tr:nth-child(even) td {
 
   <div class="cover" id="overview">
     <h1>osm2threejs</h1>
-    <p class="subtitle">Pure-Python 3D City Generator from OpenStreetMap into Three.js WebGL & 3D Assets</p>
-    <p class="version">Official PyPI & GitHub Scientific Documentation &middot; Version 0.1.0 &middot; 100% Headless Core</p>
+    <p class="subtitle">Pure-Python Headless 3D City Generator from OpenStreetMap into Three.js WebGL & 3D Assets</p>
+    <p class="version">Official PyPI & GitHub Scientific Documentation &middot; Version 0.1.0 &middot; 100% Zero-C Dependencies</p>
     <p class="date">Author: <strong>Yusuf Eminoğlu</strong> &middot; <a href="https://github.com/YusufEminoglu/osm2threejs">github.com/YusufEminoglu/osm2threejs</a> &middot; <a href="https://pypi.org/project/osm2threejs/">pypi.org/project/osm2threejs</a></p>
+  </div>
+
+  <!-- Hero Animated Illustration -->
+  <div class="figure-wrap">
+    <img src="assets/github-hero.svg" alt="An OpenStreetMap study area rising into a procedural 3D city and recolouring through curated looks as the sun crosses the sky" class="figure-img">
+    <p class="figure-caption">Figure 1: Live vector animation depicting an OpenStreetMap district rising into procedural 3D LOD2 geometry with procedural roofs, synchronized diurnal solar cycles, and dynamic theme switching.</p>
   </div>
 
   <!-- Interactive 3D WebGL Sandbox Simulator -->
   <div class="sandbox-card">
     <div class="sandbox-badge"><i data-lucide="box" style="width:12px;height:12px;margin-right:4px;"></i> Live 3D Procedural City Sandbox</div>
     <h3 style="margin-top:0;">Interactive 3D WebGL Procedural City Simulator</h3>
-    <p style="font-size:0.88rem;color:var(--muted);">Orbit with left mouse click, pan with right click, and scroll to zoom. Experiment with real-time procedural roof extrusion, height multipliers, and theme palettes:</p>
-    
+    <p style="font-size:0.88rem;color:var(--muted);">Orbit with left mouse click, pan with right click, and scroll to zoom. Experiment with real-time procedural roof extrusion, building height scales, and visual theme palettes:</p>
+
     <div id="sandbox-canvas-container">
       <canvas id="sandbox-canvas" style="width:100%;height:100%;display:block;"></canvas>
     </div>
@@ -671,16 +720,23 @@ tr:nth-child(even) td {
     </div>
   </div>
 
-  <h2 id="quickstart" class="group-header">1. Installation & Python API Quickstart</h2>
-  <p><strong>osm2threejs</strong> enables instant generation of publication-ready, interactive 3D digital twins and procedural 3D models from any geographic location in OpenStreetMap.</p>
+  <h2 id="pipeline-workflow" class="group-header">1. Resilient 4-Step Pipeline Architecture</h2>
+  <p><strong>osm2threejs</strong> decouples data harvesting from geometric synthesis. It operates completely headless in Jupyter, microservices, cloud containers, and desktop scripts without requiring a graphical display or native geospatial runtime like GDAL/GEOS.</p>
 
-  <h3>Standard Installation</h3>
+  <div class="figure-wrap">
+    <img src="assets/pipeline.svg" alt="osm2threejs 4-step pipeline from Overpass API through GeoJSON to Three.js and 3D Assets" class="figure-img">
+    <p class="figure-caption">Figure 2: Resilient four-step execution pipeline featuring multi-mirror Overpass API harvesting, SHA-256 disk caching, native tag preservation, and multi-format 3D serialization.</p>
+  </div>
+
+  <h2 id="quickstart" class="group-header">2. Installation & Python API Quickstart</h2>
+  <p>Install the official zero-dependency package directly from PyPI:</p>
+
   <pre><code>pip install osm2threejs</code></pre>
 
   <h3>Generate 3D City from Place Name or Coordinates</h3>
   <pre><code>import osm2threejs as o3
 
-# 1. Generate 3D City from place name query
+# 1. Generate 3D City Model from place name query
 city = o3.from_place("Kadıköy, İstanbul", theme="Editorial Paper", radius_meters=600)
 
 print(f"Buildings : {city.building_count}")
@@ -701,7 +757,9 @@ city.to_dxf("kadikoy_3d.dxf")
 # 5. Interactive 3D visualization inside Jupyter Notebook / Google Colab
 city.show()</code></pre>
 
-  <h2 id="cli-usage">Command Line Interface (CLI)</h2>
+  <h2 id="cli-usage">Command Line Interface (CLI) Master Reference</h2>
+  <p>The SDK ships with a high-throughput CLI tool for terminal automation, batch city generation, and DevOps pipelines:</p>
+
   <pre><code># 1. Build from place name and open interactive HTML in browser
 osm2threejs build --place "Alsancak, İzmir" --theme cyberpunk --out-html city.html --open
 
@@ -714,22 +772,22 @@ osm2threejs themes
 # 4. Geocode place name to bounding box coordinates
 osm2threejs geocode "Eiffel Tower, Paris" --radius 800</code></pre>
 
-  <h2 id="building-extrusion" class="group-header">2. Procedural 3D Building Extrusions & Roofs</h2>
-  <p>Building heights are dynamically deduced according to standardized geometric formulation:</p>
+  <h2 id="building-extrusion" class="group-header">3. Procedural 3D Building Extrusions & Roof Topologies</h2>
+  <p>Building heights are dynamically inferred using an academic hierarchy of OSM tags:</p>
 
   $$h_{\text{building}} = \begin{cases} 
-  \text{height} & \text{if explicitly tagged in OSM} \\
+  \text{height} & \text{if explicitly tagged with metric unit in OSM} \\
   \text{levels} \times 3.2\,\text{m} & \text{if } \texttt{building:levels} \text{ exists} \\
-  N_{\text{default}} \times 3.2\,\text{m} & \text{default floor assumption (default } N=3\text{)}
+  N_{\text{default}} \times 3.2\,\text{m} & \text{default residential floor assumption (default } N=3\text{)}
   \end{cases}$$
 
-  <h3 id="roof-geometries">6 Supported Procedural Roof Geometries</h3>
+  <h3 id="roof-geometries">6 Supported Procedural Roof Topologies</h3>
   <table>
     <thead>
       <tr>
-        <th>Roof Type</th>
+        <th>Roof Geometry</th>
         <th>OSM Tag Value</th>
-        <th>Geometric Formulation & Mesh Topology</th>
+        <th>Mathematical Formulation & Mesh Topology</th>
       </tr>
     </thead>
     <tbody>
@@ -751,22 +809,80 @@ osm2threejs geocode "Eiffel Tower, Paris" --radius 800</code></pre>
       <tr>
         <td><strong>Mansard Roof</strong></td>
         <td><code>roof:shape=mansard</code></td>
-        <td>Dual-slope French mansard profile with steep lower pitch</td>
+        <td>Dual-slope French mansard profile with steep lower pitch ($60^\circ$) and shallow cap ($20^\circ$)</td>
       </tr>
       <tr>
         <td><strong>Pyramidal Roof</strong></td>
         <td><code>roof:shape=pyramidal</code></td>
-        <td>Apex spire centered over the footprint centroid</td>
+        <td>Apex spire centered over the footprint centroid: $C = \left(\frac{1}{A}\sum x_i, \frac{1}{A}\sum y_i\right)$</td>
       </tr>
       <tr>
         <td><strong>Dome Roof</strong></td>
         <td><code>roof:shape=dome</code></td>
-        <td>Hemispherical tessellated cap on circular or polygonal foundations</td>
+        <td>Hemispherical UV-tessellated cap on circular or polygonal foundations</td>
       </tr>
     </tbody>
   </table>
 
-  <h2 id="themes-matrix" class="group-header">3. Curated 12 Visual Themes Matrix</h2>
+  <h2 id="road-ribbons" class="group-header">4. Road Network Ribbons & Hierarchy</h2>
+  <p>Roads in OpenStreetMap are centerline linestrings. <strong>osm2threejs</strong> converts linestrings into metric 3D ribbons using normal offsetting:</p>
+
+  $$\mathbf{p}_{\text{left}} = \mathbf{p} + \frac{w}{2} \mathbf{n}, \quad \mathbf{p}_{\text{right}} = \mathbf{p} - \frac{w}{2} \mathbf{n}, \quad \text{where } \mathbf{n} = \frac{(-dy, dx)}{\sqrt{dx^2 + dy^2}}$$
+
+  <table>
+    <thead>
+      <tr>
+        <th>Highway Tag</th>
+        <th>Default Width ($w$)</th>
+        <th>Lanes</th>
+        <th>Sidewalk & Curb Generation</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>motorway / trunk</code></td>
+        <td>14.0 m</td>
+        <td>4</td>
+        <td>Median barrier + asphalt shoulders</td>
+      </tr>
+      <tr>
+        <td><code>primary / secondary</code></td>
+        <td>10.0 m</td>
+        <td>2–3</td>
+        <td>Dual 2.0 m raised sidewalks + granite curbs</td>
+      </tr>
+      <tr>
+        <td><code>tertiary / residential</code></td>
+        <td>7.0 m</td>
+        <td>2</td>
+        <td>Dual 1.5 m sidewalks + tree pits</td>
+      </tr>
+      <tr>
+        <td><code>living_street / pedestrian</code></td>
+        <td>5.0 m</td>
+        <td>Pedestrian</td>
+        <td>Paved cobble texture + bollards</td>
+      </tr>
+      <tr>
+        <td><code>cycleway / path</code></td>
+        <td>2.5 m</td>
+        <td>Bicycle / Foot</td>
+        <td>Green/red high-friction bike lane</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2 id="water-and-parks" class="group-header">5. Public Realm, Water & Tree Scattering</h2>
+  <p>Green spaces, urban parks, rivers, and coastal lines are automatically extracted. Foliage is generated using Poisson-disc stochastic distribution over park polygons, preventing unnatural tree overlaps while maintaining authentic canopy density.</p>
+
+  <h2 id="themes-matrix" class="group-header">6. Curated 12 Visual Themes Matrix</h2>
+  <p>Every generated city model can be dynamically recoloured using 12 harmonious aesthetic palettes calibrated for academic presentations, cinematic renderings, and game design:</p>
+
+  <div class="figure-wrap">
+    <img src="assets/looks-gallery.svg" alt="osm2threejs 12 Curated Visual Themes Gallery" class="figure-img">
+    <p class="figure-caption">Figure 3: Animated matrix of curated aesthetic palettes transitioning across building walls, roofs, roads, and landscape features.</p>
+  </div>
+
   <table>
     <thead>
       <tr>
@@ -775,110 +891,139 @@ osm2threejs geocode "Eiffel Tower, Paris" --radius 800</code></pre>
         <th>Roofs</th>
         <th>Roads</th>
         <th>Water</th>
-        <th>Lighting Preset</th>
+        <th>Lighting & Mood</th>
       </tr>
     </thead>
     <tbody>
       <tr>
         <td><strong>Editorial Paper</strong></td>
-        <td><code>#f4ede2</code></td>
-        <td><code>#c9b9a6</code></td>
-        <td><code>#7c5c43</code></td>
-        <td><code>#9ab8c2</code></td>
-        <td>Warm Direct Sunlight</td>
+        <td><span class="swatch" style="background:#f4ede2;"></span><code>#f4ede2</code></td>
+        <td><span class="swatch" style="background:#c9b9a6;"></span><code>#c9b9a6</code></td>
+        <td><span class="swatch" style="background:#7c5c43;"></span><code>#7c5c43</code></td>
+        <td><span class="swatch" style="background:#9ab8c2;"></span><code>#9ab8c2</code></td>
+        <td>Warm Ivory & Architectural Print</td>
       </tr>
       <tr>
         <td><strong>Cyberpunk Neon</strong></td>
-        <td><code>#1e1e38</code></td>
-        <td><code>#ec4899</code></td>
-        <td><code>#334155</code></td>
-        <td><code>#0284c7</code></td>
-        <td>Night Glow + Magenta Bloom</td>
+        <td><span class="swatch" style="background:#1e1e38;"></span><code>#1e1e38</code></td>
+        <td><span class="swatch" style="background:#ec4899;"></span><code>#ec4899</code></td>
+        <td><span class="swatch" style="background:#334155;"></span><code>#334155</code></td>
+        <td><span class="swatch" style="background:#0284c7;"></span><code>#0284c7</code></td>
+        <td>Night Glow + Magenta/Cyan Neon</td>
       </tr>
       <tr>
         <td><strong>Blueprint Architectural</strong></td>
-        <td><code>#1e3a5f</code></td>
-        <td><code>#60a5fa</code></td>
-        <td><code>#1b4975</code></td>
-        <td><code>#38bdf8</code></td>
-        <td>Cyan Technical Glow</td>
+        <td><span class="swatch" style="background:#1e3a5f;"></span><code>#1e3a5f</code></td>
+        <td><span class="swatch" style="background:#60a5fa;"></span><code>#60a5fa</code></td>
+        <td><span class="swatch" style="background:#1b4975;"></span><code>#1b4975</code></td>
+        <td><span class="swatch" style="background:#38bdf8;"></span><code>#38bdf8</code></td>
+        <td>Cyan Grid & Technical CAD Blueprint</td>
       </tr>
       <tr>
         <td><strong>Anime Pastel</strong></td>
-        <td><code>#fffaf0</code></td>
-        <td><code>#f472b6</code></td>
-        <td><code>#7d8a96</code></td>
-        <td><code>#68b0d8</code></td>
-        <td>Soft Aesthetic Bloom</td>
+        <td><span class="swatch" style="background:#fffaf0;"></span><code>#fffaf0</code></td>
+        <td><span class="swatch" style="background:#f472b6;"></span><code>#f472b6</code></td>
+        <td><span class="swatch" style="background:#7d8a96;"></span><code>#7d8a96</code></td>
+        <td><span class="swatch" style="background:#68b0d8;"></span><code>#68b0d8</code></td>
+        <td>Soft Cel-shaded Pastels</td>
       </tr>
       <tr>
         <td><strong>Dark Glow</strong></td>
-        <td><code>#27272a</code></td>
-        <td><code>#e11d48</code></td>
-        <td><code>#3f3f46</code></td>
-        <td><code>#0369a1</code></td>
-        <td>Amber Night</td>
+        <td><span class="swatch" style="background:#27272a;"></span><code>#27272a</code></td>
+        <td><span class="swatch" style="background:#e11d48;"></span><code>#e11d48</code></td>
+        <td><span class="swatch" style="background:#3f3f46;"></span><code>#3f3f46</code></td>
+        <td><span class="swatch" style="background:#0369a1;"></span><code>#0369a1</code></td>
+        <td>Minimal Midnight Dark</td>
       </tr>
       <tr>
         <td><strong>Monochrome Clay</strong></td>
-        <td><code>#f5f5f5</code></td>
-        <td><code>#d4d4d4</code></td>
-        <td><code>#737373</code></td>
-        <td><code>#525252</code></td>
-        <td>Studio Key Ambient</td>
+        <td><span class="swatch" style="background:#f5f5f5;"></span><code>#f5f5f5</code></td>
+        <td><span class="swatch" style="background:#d4d4d4;"></span><code>#d4d4d4</code></td>
+        <td><span class="swatch" style="background:#737373;"></span><code>#737373</code></td>
+        <td><span class="swatch" style="background:#525252;"></span><code>#525252</code></td>
+        <td>Studio White Maquette</td>
       </tr>
       <tr>
         <td><strong>Warm Sand & Slate</strong></td>
-        <td><code>#f3ede2</code></td>
-        <td><code>#c27d53</code></td>
-        <td><code>#46413a</code></td>
-        <td><code>#608b98</code></td>
-        <td>Golden Hour Sunset</td>
+        <td><span class="swatch" style="background:#f3ede2;"></span><code>#f3ede2</code></td>
+        <td><span class="swatch" style="background:#c27d53;"></span><code>#c27d53</code></td>
+        <td><span class="swatch" style="background:#46413a;"></span><code>#46413a</code></td>
+        <td><span class="swatch" style="background:#608b98;"></span><code>#608b98</code></td>
+        <td>Mediterranean Terracotta & Golden Hour</td>
       </tr>
       <tr>
         <td><strong>Teal & Salmon</strong></td>
-        <td><code>#fdf4f0</code></td>
-        <td><code>#fb7185</code></td>
-        <td><code>#2f4a46</code></td>
-        <td><code>#388e85</code></td>
-        <td>Clear Oceanic Day</td>
+        <td><span class="swatch" style="background:#fdf4f0;"></span><code>#fdf4f0</code></td>
+        <td><span class="swatch" style="background:#fb7185;"></span><code>#fb7185</code></td>
+        <td><span class="swatch" style="background:#2f4a46;"></span><code>#2f4a46</code></td>
+        <td><span class="swatch" style="background:#388e85;"></span><code>#388e85</code></td>
+        <td>Oceanic Deep Teal & Warm Salmon</td>
       </tr>
       <tr>
         <td><strong>Light Purple & Black</strong></td>
-        <td><code>#faf7fc</code></td>
-        <td><code>#a855f7</code></td>
-        <td><code>#2a2a30</code></td>
-        <td><code>#7a8eb8</code></td>
-        <td>Twilight Purple</td>
+        <td><span class="swatch" style="background:#faf7fc;"></span><code>#faf7fc</code></td>
+        <td><span class="swatch" style="background:#a855f7;"></span><code>#a855f7</code></td>
+        <td><span class="swatch" style="background:#2a2a30;"></span><code>#2a2a30</code></td>
+        <td><span class="swatch" style="background:#7a8eb8;"></span><code>#7a8eb8</code></td>
+        <td>Twilight Violet & Deep Charcoal</td>
       </tr>
       <tr>
         <td><strong>Tinted Gray Teal</strong></td>
-        <td><code>#f0f5f3</code></td>
-        <td><code>#0d9488</code></td>
-        <td><code>#36433f</code></td>
-        <td><code>#4f8f87</code></td>
-        <td>Nordic Morning</td>
+        <td><span class="swatch" style="background:#f0f5f3;"></span><code>#f0f5f3</code></td>
+        <td><span class="swatch" style="background:#0d9488;"></span><code>#0d9488</code></td>
+        <td><span class="swatch" style="background:#36433f;"></span><code>#36433f</code></td>
+        <td><span class="swatch" style="background:#4f8f87;"></span><code>#4f8f87</code></td>
+        <td>Nordic Cool Gray & Pine Accents</td>
       </tr>
       <tr>
         <td><strong>Cartoon Stylized</strong></td>
-        <td><code>#ffffff</code></td>
-        <td><code>#f97316</code></td>
-        <td><code>#4a4540</code></td>
-        <td><code>#45b0e6</code></td>
-        <td>High-Contrast Vibrant</td>
+        <td><span class="swatch" style="background:#ffffff;"></span><code>#ffffff</code></td>
+        <td><span class="swatch" style="background:#f97316;"></span><code>#f97316</code></td>
+        <td><span class="swatch" style="background:#4a4540;"></span><code>#4a4540</code></td>
+        <td><span class="swatch" style="background:#45b0e6;"></span><code>#45b0e6</code></td>
+        <td>High-Contrast Saturday Cartoon</td>
       </tr>
       <tr>
         <td><strong>Realistic Satellite</strong></td>
-        <td><code>#d1d5db</code></td>
-        <td><code>#b91c1c</code></td>
-        <td><code>#1f2937</code></td>
-        <td><code>#1e3a8a</code></td>
-        <td>Photoreal Direct Noon</td>
+        <td><span class="swatch" style="background:#d1d5db;"></span><code>#d1d5db</code></td>
+        <td><span class="swatch" style="background:#b91c1c;"></span><code>#b91c1c</code></td>
+        <td><span class="swatch" style="background:#1f2937;"></span><code>#1f2937</code></td>
+        <td><span class="swatch" style="background:#1e3a8a;"></span><code>#1e3a8a</code></td>
+        <td>Photoreal Direct Aerial Noon</td>
       </tr>
     </tbody>
   </table>
 
-  <h2 id="benchmarks" class="group-header">4. Performance Benchmarks</h2>
+  <h2 id="walk-mode" class="group-header">7. First-Person Pedestrian Walk Mode & Physics</h2>
+  <p>Unlike standard orbit controls, <strong>Walk Mode</strong> simulates an actual human observer walking through the city streets. The viewpoint is placed at genuine adult human eye height:</p>
+
+  $$h_{\text{eye}} = 1.73\,\text{m}, \quad v_{\text{walk}} = 1.8\,\text{m/s} \quad (6.5\,\text{km/h})$$
+
+  <div class="figure-wrap">
+    <img src="assets/walk-mode.svg" alt="Walk mode seen from a 1.85 metre body with eyes at 1.73 metres moving past building walls" class="figure-img">
+    <p class="figure-caption">Figure 4: First-person pedestrian physics model featuring eye-level camera placement, continuous raycast collision prevention against building walls, and keyboard (WASD / Arrows) street navigation.</p>
+  </div>
+
+  <h2 id="html-bundler" class="group-header">8. Multi-Format 3D Exporters</h2>
+
+  <h3>1. Standalone Single-File Three.js HTML Viewer</h3>
+  <p>Produces a zero-dependency, self-contained HTML file bundling geometry, textures, camera controls, sun position slider, and theme dock:</p>
+  <pre><code>city.to_html("output_viewer.html")</code></pre>
+
+  <h3 id="gltf-export">2. Binary glTF 2.0 (.glb) for Blender, Unity & Unreal</h3>
+  <p>Exports optimized binary meshes with separate material slots for walls, roofs, roads, and water:</p>
+  <pre><code>city.to_glb("output_model.glb")</code></pre>
+
+  <h3 id="obj-geojson-dxf">3. Wavefront OBJ, 3D GeoJSON & AutoCAD DXF</h3>
+  <pre><code>city.to_obj("model.obj")
+city.to_geojson("layers_3d.geojson")
+city.to_dxf("cad_drawing.dxf")</code></pre>
+
+  <h3 id="jupyter-notebook">4. Jupyter Notebook & Google Colab Widget</h3>
+  <pre><code># Renders responsive 3D WebGL canvas directly inside notebook cell
+city.show(height=500)</code></pre>
+
+  <h2 id="benchmarks" class="group-header">9. Performance Benchmarks</h2>
   <table>
     <thead>
       <tr>
@@ -895,7 +1040,7 @@ osm2threejs geocode "Eiffel Tower, Paris" --radius 800</code></pre>
         <td>Urban Core (1 km²)</td>
         <td>15,000 Nodes/Ways</td>
         <td><strong>0.2 ms</strong></td>
-        <td>Instant Disk Cache</td>
+        <td>Instant SHA-256 Cache</td>
       </tr>
       <tr>
         <td><strong>Procedural 3D Mesh Generation</strong></td>
@@ -921,8 +1066,8 @@ osm2threejs geocode "Eiffel Tower, Paris" --radius 800</code></pre>
     </tbody>
   </table>
 
-  <h2 id="bibliography" class="group-header">5. Academic Citation & License</h2>
-  <p>Distributed under the <strong>MIT License</strong>.</p>
+  <h2 id="bibliography" class="group-header">10. Academic Citation & License</h2>
+  <p>Released under the open-source <strong>MIT License</strong>.</p>
 
   <pre><code>@software{eminoglu2026osm2threejs,
   author    = {Emino{\u{g}}lu, Yusuf},
@@ -971,7 +1116,7 @@ const search = document.getElementById("search");
 search.addEventListener("input", function(e) {
   const q = e.target.value.toLowerCase().trim();
   const algLinks = document.querySelectorAll(".toc-algs li a");
-  
+
   algLinks.forEach(link => {
     const text = (link.getAttribute("data-display") || link.innerText).toLowerCase();
     const li = link.closest("li");

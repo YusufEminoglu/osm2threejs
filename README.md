@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs/assets/github-hero.svg" alt="An OpenStreetMap study area rising into a procedural 3D city and recolouring through curated looks as the sun crosses the sky" width="100%">
+</p>
+
 # osm2threejs
 
 <div align="center">
@@ -8,9 +12,8 @@
 [![Documentation](https://img.shields.io/badge/docs-GitHub%20Pages-818cf8.svg)](https://yusufeminoglu.github.io/osm2threejs/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Code style: Ruff](https://img.shields.io/badge/code%20style-ruff-D7FF64.svg)](https://docs.astral.sh/ruff/)
-[![Test Coverage](https://img.shields.io/badge/coverage-70%25%2B-brightgreen.svg)](#-development--testing)
 
-**Headless 3D City Generator from OpenStreetMap into Three.js WebGL & 3D Assets.**
+**Pure-Python Headless 3D City Generator from OpenStreetMap into Three.js WebGL & 3D Assets.**
 
 [📖 **Open Interactive Web Manual (GitHub Pages)**](https://yusufeminoglu.github.io/osm2threejs/) • [📦 **PyPI Package**](https://pypi.org/project/osm2threejs/) • [🐛 **Issue Tracker**](https://github.com/YusufEminoglu/osm2threejs/issues)
 
@@ -20,9 +23,13 @@
 
 ## 🌟 Overview
 
-**osm2threejs** is a pure-Python, zero-C-dependency geospatial engine that turns OpenStreetMap data into publication-ready, interactive **60 FPS Three.js 3D WebGL scenes**, **binary glTF/GLB models**, **Wavefront OBJ meshes**, and **3D GeoJSON** layers.
+**osm2threejs** is a pure-Python, zero-C-dependency geospatial engine that turns OpenStreetMap data into publication-ready, interactive **60 FPS Three.js 3D WebGL scenes**, **binary glTF/GLB models**, **Wavefront OBJ meshes**, **AutoCAD DXF**, and **3D GeoJSON** layers.
 
 Designed from the ground up for urban planners, architects, game developers, GIS analysts, and data scientists, **osm2threejs** runs completely headless across **Jupyter Notebooks**, **Google Colab**, **FastAPI / Flask microservices**, **Docker containers**, and terminal **CLI** pipelines.
+
+<p align="center">
+  <img src="docs/assets/pipeline.svg" alt="osm2threejs export pipeline from Overpass to GeoJSON and Three.js 3D models" width="100%">
+</p>
 
 ---
 
@@ -30,8 +37,8 @@ Designed from the ground up for urban planners, architects, game developers, GIS
 
 1. **Instant 3D City Generation:**
    - Build complete 3D digital twins from place names (`from_place("Kadıköy, İstanbul")`) or bounding boxes (`from_bbox(...)`).
-2. **Procedural Building Extrusions & 6 Roof Types:**
-   - Deduces building heights from `building:levels` ($levels \times 3.2\text{m}$) or `height` tags.
+2. **Procedural Building Extrusions & 6 Roof Topologies:**
+   - Inferences building heights from `building:levels` ($levels \times 3.2\text{m}$) or `height` tags.
    - Generates procedural **Flat**, **Gabled**, **Hipped**, **Mansard**, **Pyramidal**, and **Dome** roof geometries.
 3. **12 Curated Visual Themes:**
    - *Editorial Paper, Cyberpunk Neon, Blueprint Architectural, Anime Pastel, Dark Glow, Warm Sand & Slate, Teal & Salmon, Light Purple & Black, Tinted Gray Teal, Cartoon Stylized, Monochrome Clay, Realistic Satellite*.
@@ -41,9 +48,11 @@ Designed from the ground up for urban planners, architects, game developers, GIS
    - 📐 **Wavefront OBJ + MTL:** Universal 3D mesh format.
    - 🗺️ **3D GeoJSON (PolygonZ / LineStringZ):** Standard OGC 3D vector geometry.
    - 📐 **AutoCAD DXF 3D:** 3D Polyline / 3DFace CAD drawing.
-5. **Interactive Jupyter Notebook / Google Colab Widget:**
+5. **First-Person Pedestrian Walk Mode:**
+   - True 1.73m human eye-level navigation with real-time collision detection and keyboard WASD controls.
+6. **Interactive Jupyter Notebook / Google Colab Widget:**
    - Direct inline 3D visualization inside notebook cells via `city.show()` or `_repr_html_()`.
-6. **Smart Disk Cache & Multi-Mirror Resilience:**
+7. **Smart Disk Cache & Multi-Mirror Resilience:**
    - SHA-256 disk cache with 7-day TTL and automatic failover across 3 Overpass mirrors.
 
 ---
@@ -122,6 +131,10 @@ osm2threejs geocode "Eiffel Tower, Paris" --radius 800
 
 ## 🎨 12 Curated Visual Themes
 
+<p align="center">
+  <img src="docs/assets/looks-gallery.svg" alt="12 Curated Visual Themes Gallery for osm2threejs" width="100%">
+</p>
+
 | Theme Name | Style / Lighting | Walls | Roofs | Roadway | Water |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **Editorial Paper** | Warm Sunlight & Paper Tone | `#f4ede2` | `#c9b9a6` | `#7c5c43` | `#9ab8c2` |
@@ -136,6 +149,16 @@ osm2threejs geocode "Eiffel Tower, Paris" --radius 800
 | **Tinted Gray Teal** | Nordic Morning Fog | `#f0f5f3` | `#0d9488` | `#36433f` | `#4f8f87` |
 | **Cartoon Stylized** | High-Contrast Cell Shaded | `#ffffff` | `#f97316` | `#4a4540` | `#45b0e6` |
 | **Realistic Satellite** | Direct Noon Photoreal | `#d1d5db` | `#b91c1c` | `#1f2937` | `#1e3a8a` |
+
+---
+
+## 🚶 First-Person Pedestrian Walk Mode
+
+<p align="center">
+  <img src="docs/assets/walk-mode.svg" alt="A 1.85 metre walker moving through the street with the eye height marked at 1.73 metres" width="100%">
+</p>
+
+Walk Mode simulates human ground-level perception with realistic eye height (1.73m), dynamic movement velocity (1.8m/s), and real-time obstacle avoidance.
 
 ---
 

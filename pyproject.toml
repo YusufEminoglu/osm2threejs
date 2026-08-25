@@ -85,6 +85,8 @@ exclude = [
     ".venv",
     "build",
     "dist",
+    "scratch",
+    "docs/assets",
     "build_osm2threejs_docs.py",
 ]
 
