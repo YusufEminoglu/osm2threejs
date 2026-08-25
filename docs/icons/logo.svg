@@ -75,5 +75,5 @@
 
   <!-- Glowing 3D Badge -->
   <rect x="186" y="390" width="140" height="42" rx="21" fill="#0f172a" stroke="url(#glow)" stroke-width="3"/>
-  <text x="256" y="417" font-family="'Plus Jakarta Sans', 'Inter', sans-serif" font-size="19" font-weight="800" fill="#38bdf8" text-anchor="middle" letter-spacing="1.5">3D &middot; WebGL</text>
+  <text x="256" y="417" font-family="'Plus Jakarta Sans', 'Inter', sans-serif" font-size="19" font-weight="800" fill="#38bdf8" text-anchor="middle" letter-spacing="1.5">3D &#183; WebGL</text>
 </svg>
