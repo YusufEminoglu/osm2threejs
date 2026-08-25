@@ -85,6 +85,7 @@ exclude = [
     ".venv",
     "build",
     "dist",
+    "build_osm2threejs_docs.py",
 ]
 
 [tool.ruff.lint]
