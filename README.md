@@ -2,9 +2,13 @@
   <img src="docs/assets/github-hero.svg" alt="An OpenStreetMap study area rising into a procedural 3D city and recolouring through curated looks as the sun crosses the sky" width="100%">
 </p>
 
-# osm2threejs
-
 <div align="center">
+
+<a href="https://yusufeminoglu.github.io/osm2threejs/">
+  <img src="https://raw.githubusercontent.com/YusufEminoglu/osm2threejs/main/docs/icons/logo.svg" width="140" height="140" alt="osm2threejs logo" />
+</a>
+
+# osm2threejs
 
 [![CI](https://github.com/YusufEminoglu/osm2threejs/actions/workflows/ci.yml/badge.svg)](https://github.com/YusufEminoglu/osm2threejs/actions/workflows/ci.yml)
 [![PyPI version](https://img.shields.io/pypi/v/osm2threejs.svg?color=38bdf8)](https://pypi.org/project/osm2threejs/)

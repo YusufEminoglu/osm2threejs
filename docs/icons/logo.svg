@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b0f19"/>
+      <stop offset="100%" stop-color="#161e31"/>
+    </linearGradient>
+    <linearGradient id="glow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="50%" stop-color="#818cf8"/>
+      <stop offset="100%" stop-color="#c084fc"/>
+    </linearGradient>
+    <linearGradient id="bldg1" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#0284c7"/>
+    </linearGradient>
+    <linearGradient id="bldg2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#818cf8"/>
+      <stop offset="100%" stop-color="#4f46e5"/>
+    </linearGradient>
+    <linearGradient id="bldg3" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#c084fc"/>
+      <stop offset="100%" stop-color="#9333ea"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#38bdf8" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <!-- Background Card -->
+  <rect x="24" y="24" width="464" height="464" rx="96" fill="url(#bg)" stroke="url(#glow)" stroke-width="6" filter="url(#shadow)"/>
+
+  <!-- Isometric Ground Grid -->
+  <g opacity="0.3" stroke="#38bdf8" stroke-width="2" fill="none">
+    <path d="M256 120 L400 200 L256 280 L112 200 Z"/>
+    <path d="M256 180 L350 230 L256 280 L162 230 Z"/>
+    <line x1="256" y1="280" x2="256" y2="400"/>
+    <line x1="112" y1="200" x2="112" y2="320"/>
+    <line x1="400" y1="200" x2="400" y2="320"/>
+  </g>
+
+  <!-- Isometric 3D City Buildings -->
+  <!-- Left Skyscraper -->
+  <g>
+    <!-- Top Face -->
+    <polygon points="176,190 220,165 220,165 176,140 132,165" fill="#67e8f9"/>
+    <!-- Left Face -->
+    <polygon points="132,165 176,190 176,330 132,305" fill="url(#bldg1)" opacity="0.9"/>
+    <!-- Right Face -->
+    <polygon points="176,190 220,165 220,305 176,330" fill="#0369a1"/>
+  </g>
+
+  <!-- Center High-Rise Tower -->
+  <g>
+    <!-- Roof Spire / Gabled Cap -->
+    <polygon points="256,70 306,105 256,135 206,105" fill="#a5b4fc"/>
+    <polygon points="256,50 256,70 306,105 256,135 206,105" fill="none" stroke="#38bdf8" stroke-width="3"/>
+    <!-- Left Face -->
+    <polygon points="206,105 256,135 256,365 206,335" fill="url(#bldg2)"/>
+    <!-- Right Face -->
+    <polygon points="256,135 306,105 306,335 256,365" fill="#3730a3"/>
+    <!-- Window Grid Accent Lines -->
+    <line x1="226" y1="170" x2="226" y2="330" stroke="#c7d2fe" stroke-width="2" opacity="0.6"/>
+    <line x1="286" y1="150" x2="286" y2="310" stroke="#818cf8" stroke-width="2" opacity="0.6"/>
+  </g>
+
+  <!-- Right Skyscraper -->
+  <g>
+    <!-- Top Face -->
+    <polygon points="336,190 380,165 336,140 292,165" fill="#e9d5ff"/>
+    <!-- Left Face -->
+    <polygon points="292,165 336,190 336,320 292,295" fill="url(#bldg3)"/>
+    <!-- Right Face -->
+    <polygon points="336,190 380,165 380,295 336,320" fill="#6b21a8"/>
+  </g>
+
+  <!-- Glowing 3D Badge -->
+  <rect x="186" y="390" width="140" height="42" rx="21" fill="#0f172a" stroke="url(#glow)" stroke-width="3"/>
+  <text x="256" y="417" font-family="'Plus Jakarta Sans', 'Inter', sans-serif" font-size="19" font-weight="800" fill="#38bdf8" text-anchor="middle" letter-spacing="1.5">3D &middot; WebGL</text>
+</svg>
