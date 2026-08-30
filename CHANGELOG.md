@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.9.0] - 2026-08-30
+
+### Added
+- **Parametric Suspension & Cable-Stayed Bridge Mesh Generator (`procedural_bridge_piers_cables.py`)**: Added `generate_3d_suspension_bridge_mesh` with pylon towers, catenary main cables, and vertical hanger suspenders.
+- **3D Screen-Space Landmark & POI Callout Labels (`interactive_poi_callout_labels.py`)**: Added `generate_3d_poi_callouts` producing interactive billboard pins and vertical leader lines.
+
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 

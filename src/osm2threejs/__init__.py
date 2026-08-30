@@ -5,7 +5,7 @@ osm2threejs — Pure-Python 3D City Generator from OpenStreetMap into Three.js W
 
 from __future__ import annotations
 
-__version__ = "0.8.0"
+__version__ = "0.9.0"
 __author__ = "Yusuf Eminoğlu"
 
 from .billboard_lod_manager import (
@@ -21,6 +21,16 @@ from .camera_director import (
     CameraKeyframe3D,
     CinematicFlythroughPath,
     generate_cinematic_flythrough_path,
+)
+from .interactive_poi_callout_labels import (
+    CalloutPin3D,
+    POICalloutSet,
+    generate_3d_poi_callouts,
+)
+from .procedural_bridge_piers_cables import (
+    BridgePylonType,
+    BridgeStructure3D,
+    generate_3d_suspension_bridge_mesh,
 )
 from .exporters import (
     export_to_dxf_3d,
@@ -265,4 +275,12 @@ __all__ = [
     "generate_lod_building_levels",
     "BuildingLODSet",
     "LODDistanceConfig",
+    # 3D Suspension Bridge Pylon & Catenary Cables
+    "generate_3d_suspension_bridge_mesh",
+    "BridgeStructure3D",
+    "BridgePylonType",
+    # 3D POI Callout Labels & Leader Lines
+    "generate_3d_poi_callouts",
+    "POICalloutSet",
+    "CalloutPin3D",
 ]
