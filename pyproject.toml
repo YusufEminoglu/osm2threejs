@@ -4,11 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "osm2threejs"
-version = "0.11.0"
+version = "0.12.0"
 authors = [
     { name = "Yusuf Eminoğlu", email = "yusufeminoglu@gmail.com" }
 ]
-description = "Headless 3D City Generator from OpenStreetMap into Three.js WebGL, 3D Railways & Acoustic Soundwalls."
+description = "Pure-Python 3D City & Scene Generator, Rooftop Helipads & Nautical Marinas Suite."
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.9"

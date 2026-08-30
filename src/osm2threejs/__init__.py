@@ -5,7 +5,7 @@ osm2threejs — Pure-Python 3D City Generator from OpenStreetMap into Three.js W
 
 from __future__ import annotations
 
-__version__ = "0.11.0"
+__version__ = "0.12.0"
 __author__ = "Yusuf Eminoğlu"
 
 from .billboard_lod_manager import (
@@ -21,6 +21,16 @@ from .camera_director import (
     CameraKeyframe3D,
     CinematicFlythroughPath,
     generate_cinematic_flythrough_path,
+)
+from .harbor_marina_pier_builder import (
+    DockBerthSpec,
+    MarinaHarborGeometry3D,
+    generate_3d_marina_harbor_mesh,
+)
+from .helipad_aviation_lighting_builder import (
+    HelipadAviation3D,
+    HelipadLightingProfile,
+    generate_3d_helipad_mesh,
 )
 from .interactive_poi_callout_labels import (
     CalloutPin3D,
@@ -319,4 +329,12 @@ __all__ = [
     "generate_3d_pedestrian_plaza_mesh",
     "PedestrianPlazaGeometry3D",
     "CrosswalkMarkingType",
+    # 3D Helipad & Aviation Lighting
+    "generate_3d_helipad_mesh",
+    "HelipadAviation3D",
+    "HelipadLightingProfile",
+    # 3D Nautical Marina, Docks & Buoys
+    "generate_3d_marina_harbor_mesh",
+    "MarinaHarborGeometry3D",
+    "DockBerthSpec",
 ]

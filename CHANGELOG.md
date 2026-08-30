@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.12.0] - 2026-08-30
+### Added
+- **3D Rooftop & Ground Helipad with Aviation Lighting (`helipad_aviation_lighting_builder.py`)**: Added `generate_3d_helipad_mesh` generating ICAO Annex 14 compliant helipad touchdown circles and perimeter LED beacons.
+- **3D Nautical Harbor, Marina Docks & Buoy Generator (`harbor_marina_pier_builder.py`)**: Added `generate_3d_marina_harbor_mesh` extruding floating pontoons, finger piers, breakwaters, and channel buoys.
+
 ## [0.11.0] - 2026-08-30
 ### Added
 - **Parametric Wind Turbine & Solar Photovoltaic Farm Builder (`wind_turbine_solar_farm_builder.py`)**: Added `generate_3d_renewable_energy_assets` extruding 3-bladed turbine towers, nacelles, and tilted solar PV arrays.
