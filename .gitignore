@@ -28,3 +28,13 @@ ENV/
 htmlcov/
 .ruff_cache/
 .mypy_cache/
+
+__pycache__/
+*.py[cod]
+*.class
+dist/
+build/
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
