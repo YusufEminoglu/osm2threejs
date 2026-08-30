@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.11.0] - 2026-08-30
+### Added
+- **Parametric Wind Turbine & Solar Photovoltaic Farm Builder (`wind_turbine_solar_farm_builder.py`)**: Added `generate_3d_renewable_energy_assets` extruding 3-bladed turbine towers, nacelles, and tilted solar PV arrays.
+- **3D Pedestrian Plaza, Textured Crosswalk & Tactile Paver Engine (`pedestrian_plaza_crosswalk_builder.py`)**: Added `generate_3d_pedestrian_plaza_mesh` creating curbs, zebra stripes, and accessibility paving studs.
+
 ## [0.10.0] - 2026-08-30
 ### Added
 - **3D Urban Light Rail & Tram Track Extrusion (`tram_metro_rail_track_builder.py`)**: Added `generate_3d_railway_mesh` generating Vignole dual steel rails, concrete ties, and overhead catenary lines.

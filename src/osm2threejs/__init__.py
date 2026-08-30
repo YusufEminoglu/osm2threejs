@@ -5,7 +5,7 @@ osm2threejs — Pure-Python 3D City Generator from OpenStreetMap into Three.js W
 
 from __future__ import annotations
 
-__version__ = "0.10.0"
+__version__ = "0.11.0"
 __author__ = "Yusuf Eminoğlu"
 
 from .billboard_lod_manager import (
@@ -27,6 +27,11 @@ from .interactive_poi_callout_labels import (
     POICalloutSet,
     generate_3d_poi_callouts,
 )
+from .pedestrian_plaza_crosswalk_builder import (
+    CrosswalkMarkingType,
+    PedestrianPlazaGeometry3D,
+    generate_3d_pedestrian_plaza_mesh,
+)
 from .procedural_bridge_piers_cables import (
     BridgePylonType,
     BridgeStructure3D,
@@ -41,6 +46,11 @@ from .tram_metro_rail_track_builder import (
     RailTrackProfile,
     RailwayGeometry3D,
     generate_3d_railway_mesh,
+)
+from .wind_turbine_solar_farm_builder import (
+    RenewableEnergyScene3D,
+    WindTurbineSpec,
+    generate_3d_renewable_energy_assets,
 )
 from .exporters import (
     export_to_dxf_3d,
@@ -301,4 +311,12 @@ __all__ = [
     "generate_3d_noise_barrier_mesh",
     "NoiseBarrierMesh3D",
     "AcousticPanelMaterial",
+    # Parametric Wind Turbine & Solar Farm 3D Mesh
+    "generate_3d_renewable_energy_assets",
+    "RenewableEnergyScene3D",
+    "WindTurbineSpec",
+    # 3D Pedestrian Plaza & Crosswalk Decals
+    "generate_3d_pedestrian_plaza_mesh",
+    "PedestrianPlazaGeometry3D",
+    "CrosswalkMarkingType",
 ]
