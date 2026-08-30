@@ -5,7 +5,7 @@ osm2threejs — Pure-Python 3D City Generator from OpenStreetMap into Three.js W
 
 from __future__ import annotations
 
-__version__ = "0.9.0"
+__version__ = "0.10.0"
 __author__ = "Yusuf Eminoğlu"
 
 from .billboard_lod_manager import (
@@ -31,6 +31,16 @@ from .procedural_bridge_piers_cables import (
     BridgePylonType,
     BridgeStructure3D,
     generate_3d_suspension_bridge_mesh,
+)
+from .soundwall_noise_barrier_builder import (
+    AcousticPanelMaterial,
+    NoiseBarrierMesh3D,
+    generate_3d_noise_barrier_mesh,
+)
+from .tram_metro_rail_track_builder import (
+    RailTrackProfile,
+    RailwayGeometry3D,
+    generate_3d_railway_mesh,
 )
 from .exporters import (
     export_to_dxf_3d,
@@ -283,4 +293,12 @@ __all__ = [
     "generate_3d_poi_callouts",
     "POICalloutSet",
     "CalloutPin3D",
+    # 3D Urban Light Rail & Tram Track Extrusion
+    "generate_3d_railway_mesh",
+    "RailwayGeometry3D",
+    "RailTrackProfile",
+    # Acoustic Highway Noise Barrier & Soundwall
+    "generate_3d_noise_barrier_mesh",
+    "NoiseBarrierMesh3D",
+    "AcousticPanelMaterial",
 ]

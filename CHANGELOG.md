@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.10.0] - 2026-08-30
+### Added
+- **3D Urban Light Rail & Tram Track Extrusion (`tram_metro_rail_track_builder.py`)**: Added `generate_3d_railway_mesh` generating Vignole dual steel rails, concrete ties, and overhead catenary lines.
+- **Acoustic Highway Noise Barrier & Soundwall Extrusion (`soundwall_noise_barrier_builder.py`)**: Added `generate_3d_noise_barrier_mesh` modeling STC acoustic ratings and steel post columns.
+
 ## [0.9.0] - 2026-08-30
 
 ### Added
