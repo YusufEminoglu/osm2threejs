@@ -10,16 +10,16 @@
 
 # osm2threejs
 
-[![CI](https://github.com/YusufEminoglu/osm2threejs/actions/workflows/ci.yml/badge.svg)](https://github.com/YusufEminoglu/osm2threejs/actions/workflows/ci.yml)
+[![CI](https://gitlab.com/geospacephilo/osm2threejs/actions/workflows/ci.yml/badge.svg)](https://gitlab.com/geospacephilo/osm2threejs/actions/workflows/ci.yml)
 [![PyPI version](https://img.shields.io/pypi/v/osm2threejs.svg?color=38bdf8)](https://pypi.org/project/osm2threejs/)
 [![Python version support](https://img.shields.io/pypi/pyversions/osm2threejs.svg?color=10b981)](https://pypi.org/project/osm2threejs/)
-[![Documentation](https://img.shields.io/badge/docs-GitHub%20Pages-818cf8.svg)](https://yusufeminoglu.github.io/osm2threejs/)
+[![Documentation](https://img.shields.io/badge/docs-GitLab%20Pages-818cf8.svg)](https://yusufeminoglu.github.io/osm2threejs/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Code style: Ruff](https://img.shields.io/badge/code%20style-ruff-D7FF64.svg)](https://docs.astral.sh/ruff/)
 
 **Pure-Python Headless 3D City Generator from OpenStreetMap into Three.js WebGL & 3D Assets.**
 
-[📖 **Open Interactive Web Manual (GitHub Pages)**](https://yusufeminoglu.github.io/osm2threejs/) • [📦 **PyPI Package**](https://pypi.org/project/osm2threejs/) • [🐛 **Issue Tracker**](https://github.com/YusufEminoglu/osm2threejs/issues)
+[📖 **Open Interactive Web Manual (GitLab Pages)**](https://yusufeminoglu.github.io/osm2threejs/) • [📦 **PyPI Package**](https://pypi.org/project/osm2threejs/) • [🐛 **Issue Tracker**](https://gitlab.com/geospacephilo/osm2threejs/-/issues)
 
 </div>
 
@@ -181,7 +181,7 @@ Walk Mode simulates human ground-level perception with realistic eye height (1.7
 
 ```bash
 # Clone the repository
-git clone https://github.com/YusufEminoglu/osm2threejs.git
+git clone https://gitlab.com/geospacephilo/osm2threejs.git
 cd osm2threejs
 
 # Install in editable mode with dev dependencies
@@ -208,7 +208,7 @@ If you use **osm2threejs** in research, urban planning digital twins, or softwar
   year      = {2026},
   publisher = {PyPI - Python Package Index},
   version   = {0.1.0},
-  url       = {https://github.com/YusufEminoglu/osm2threejs}
+  url       = {https://gitlab.com/geospacephilo/osm2threejs}
 }
 ```
 
