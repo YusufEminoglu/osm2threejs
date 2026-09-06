@@ -66,7 +66,7 @@ osm2threejs = "osm2threejs.cli:main"
 Homepage = "https://geophilo.com/"
 Repository = "https://gitlab.com/geospacephilo/osm2threejs"
 Issues = "https://gitlab.com/geospacephilo/osm2threejs/-/issues"
-Documentation = "https://geophilo.com/"
+Documentation = "https://geophilo.com/osm2threejs/"
 Changelog = "https://gitlab.com/geospacephilo/osm2threejs/-/blob/main/CHANGELOG.md"
 
 [tool.setuptools]

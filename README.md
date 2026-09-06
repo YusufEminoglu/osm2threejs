@@ -13,13 +13,13 @@
 
 [![PyPI version](https://img.shields.io/pypi/v/osm2threejs.svg?color=38bdf8)](https://pypi.org/project/osm2threejs/)
 [![Python version support](https://img.shields.io/pypi/pyversions/osm2threejs.svg?color=10b981)](https://pypi.org/project/osm2threejs/)
-[![Documentation](https://img.shields.io/badge/docs-GEOPHILO-10b981.svg)](https://geophilo.com/)
+[![Documentation](https://img.shields.io/badge/docs-GEOPHILO-10b981.svg)](https://geophilo.com/osm2threejs/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Code style: Ruff](https://img.shields.io/badge/code%20style-ruff-D7FF64.svg)](https://docs.astral.sh/ruff/)
 
 **Pure-Python Headless 3D City Generator from OpenStreetMap into Three.js WebGL & 3D Assets.**
 
-[📖 **Open Interactive Web Manual (GitLab Pages)**](https://geophilo.com/) • [📦 **PyPI Package**](https://pypi.org/project/osm2threejs/) • [🐛 **Issue Tracker**](https://gitlab.com/geospacephilo/osm2threejs/-/issues)
+[📖 **Open Interactive Web Manual**](https://geophilo.com/osm2threejs/) • [📦 **PyPI Package**](https://pypi.org/project/osm2threejs/) • [🐛 **Issue Tracker**](https://gitlab.com/geospacephilo/osm2threejs/-/issues)
 
 </div>
 
