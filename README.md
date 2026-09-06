@@ -1,25 +1,25 @@
 <p align="center">
-  <img src="docs/assets/github-hero.svg" alt="An OpenStreetMap study area rising into a procedural 3D city and recolouring through curated looks as the sun crosses the sky" width="100%">
+  <img src="https://geophilo.com/assets/sdk_icons/osm2threejs_sdk.svg" alt="An OpenStreetMap study area rising into a procedural 3D city and recolouring through curated looks as the sun crosses the sky" width="100%">
 </p>
 
 <div align="center">
 
-<a href="https://yusufeminoglu.github.io/osm2threejs/">
-  <img src="https://raw.githubusercontent.com/YusufEminoglu/osm2threejs/main/docs/icons/logo.svg" width="140" height="140" alt="osm2threejs logo" />
+<a href="https://geophilo.com/">
+  <img src="https://geophilo.com/assets/sdk_icons/osm2threejs_sdk.svg" width="140" height="140" alt="osm2threejs logo" />
 </a>
 
 # osm2threejs
 
-[![CI](https://gitlab.com/geospacephilo/osm2threejs/actions/workflows/ci.yml/badge.svg)](https://gitlab.com/geospacephilo/osm2threejs/actions/workflows/ci.yml)
+
 [![PyPI version](https://img.shields.io/pypi/v/osm2threejs.svg?color=38bdf8)](https://pypi.org/project/osm2threejs/)
 [![Python version support](https://img.shields.io/pypi/pyversions/osm2threejs.svg?color=10b981)](https://pypi.org/project/osm2threejs/)
-[![Documentation](https://img.shields.io/badge/docs-GitLab%20Pages-818cf8.svg)](https://yusufeminoglu.github.io/osm2threejs/)
+[![Documentation](https://img.shields.io/badge/docs-GEOPHILO-10b981.svg)](https://geophilo.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Code style: Ruff](https://img.shields.io/badge/code%20style-ruff-D7FF64.svg)](https://docs.astral.sh/ruff/)
 
 **Pure-Python Headless 3D City Generator from OpenStreetMap into Three.js WebGL & 3D Assets.**
 
-[📖 **Open Interactive Web Manual (GitLab Pages)**](https://yusufeminoglu.github.io/osm2threejs/) • [📦 **PyPI Package**](https://pypi.org/project/osm2threejs/) • [🐛 **Issue Tracker**](https://gitlab.com/geospacephilo/osm2threejs/-/issues)
+[📖 **Open Interactive Web Manual (GitLab Pages)**](https://geophilo.com/) • [📦 **PyPI Package**](https://pypi.org/project/osm2threejs/) • [🐛 **Issue Tracker**](https://gitlab.com/geospacephilo/osm2threejs/-/issues)
 
 </div>
 
@@ -32,7 +32,7 @@
 Designed from the ground up for urban planners, architects, game developers, GIS analysts, and data scientists, **osm2threejs** runs completely headless across **Jupyter Notebooks**, **Google Colab**, **FastAPI / Flask microservices**, **Docker containers**, and terminal **CLI** pipelines.
 
 <p align="center">
-  <img src="docs/assets/pipeline.svg" alt="osm2threejs export pipeline from Overpass to GeoJSON and Three.js 3D models" width="100%">
+  <img src="https://geophilo.com/assets/sdk_icons/osm2threejs_sdk.svg" alt="osm2threejs export pipeline from Overpass to GeoJSON and Three.js 3D models" width="100%">
 </p>
 
 ---
@@ -136,7 +136,7 @@ osm2threejs geocode "Eiffel Tower, Paris" --radius 800
 ## 🎨 12 Curated Visual Themes
 
 <p align="center">
-  <img src="docs/assets/looks-gallery.svg" alt="12 Curated Visual Themes Gallery for osm2threejs" width="100%">
+  <img src="https://geophilo.com/assets/sdk_icons/osm2threejs_sdk.svg" alt="12 Curated Visual Themes Gallery for osm2threejs" width="100%">
 </p>
 
 | Theme Name | Style / Lighting | Walls | Roofs | Roadway | Water |
@@ -159,7 +159,7 @@ osm2threejs geocode "Eiffel Tower, Paris" --radius 800
 ## 🚶 First-Person Pedestrian Walk Mode
 
 <p align="center">
-  <img src="docs/assets/walk-mode.svg" alt="A 1.85 metre walker moving through the street with the eye height marked at 1.73 metres" width="100%">
+  <img src="https://geophilo.com/assets/sdk_icons/osm2threejs_sdk.svg" alt="A 1.85 metre walker moving through the street with the eye height marked at 1.73 metres" width="100%">
 </p>
 
 Walk Mode simulates human ground-level perception with realistic eye height (1.73m), dynamic movement velocity (1.8m/s), and real-time obstacle avoidance.

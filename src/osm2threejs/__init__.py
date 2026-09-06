@@ -5,7 +5,7 @@ osm2threejs — Pure-Python 3D City Generator from OpenStreetMap into Three.js W
 
 from __future__ import annotations
 
-__version__ = "0.12.0"
+__version__ = "0.12.1"
 __author__ = "Yusuf Eminoğlu"
 
 from .billboard_lod_manager import (
