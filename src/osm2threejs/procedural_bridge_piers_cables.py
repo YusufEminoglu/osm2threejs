@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 import math
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from enum import Enum
 from typing import Any, Sequence
 
@@ -76,7 +76,6 @@ def generate_3d_suspension_bridge_mesh(
     # Generate parabolic catenary cable curve between towers:
     # z(s) = z_peak - 4 * sag * (s / span_main) * (1 - s / span_main)
     cables: list[tuple[float, float, float]] = []
-    main_span = span * 0.5
     sag_m = tower_height_m * 0.75
 
     for i in range(num_hangers + 1):

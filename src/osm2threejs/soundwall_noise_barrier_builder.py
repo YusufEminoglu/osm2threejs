@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 import math
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from enum import Enum
 from typing import Any, Sequence
 
@@ -64,7 +64,6 @@ def generate_3d_noise_barrier_mesh(
     stc = stc_map.get(material, 30.0)
 
     posts: list[tuple[float, float, float]] = []
-    num_posts = int(tot_len // post_spacing_m) + 1
 
     for p in pts:
         posts.append((round(p[0], 2), round(p[1], 2), round(p[2], 2)))

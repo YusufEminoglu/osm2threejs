@@ -4,8 +4,7 @@
 from __future__ import annotations
 
 import math
-from dataclasses import dataclass, field
-from pathlib import Path
+from dataclasses import dataclass
 from typing import Any, Sequence
 
 
@@ -66,9 +65,6 @@ def bake_static_building_shadows(
 
         # Projected roof vertices
         projected_roof = [(p[0] + offset_x, p[1] + offset_y) for p in fp]
-
-        # Combine footprint + projected roof into ground shadow convex envelope
-        all_shadow_pts = fp + projected_roof
 
         # Approximate shadow polygon
         combined_poly = fp + list(reversed(projected_roof))

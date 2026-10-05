@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 import math
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Any, Sequence
 
 
@@ -51,7 +51,6 @@ def generate_3d_renewable_energy_assets(
 
     for tx, ty, tz in locs:
         # Tower base and hub vertices
-        b_idx = len(turbine_verts)
         turbine_verts.append((tx, ty, tz))
         turbine_verts.append((tx, ty, tz + spec.hub_height_m))
 

@@ -8,7 +8,6 @@ import unittest
 from osm2threejs import (
     ShadowBakeResult,
     TrafficSimulationMesh,
-    TrafficVehicle3D,
     bake_static_building_shadows,
     generate_traffic_flow_geometry,
 )

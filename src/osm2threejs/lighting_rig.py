@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 import math
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Any, Sequence
 
 
@@ -53,7 +53,6 @@ def generate_night_city_effects(
         n = len(line)
         if n < 2:
             continue
-        accum_dist = 0.0
         for i in range(n - 1):
             p1 = line[i]
             p2 = line[i + 1]

@@ -8,7 +8,6 @@ import unittest
 from osm2threejs import (
     BridgePylonType,
     BridgeStructure3D,
-    CalloutPin3D,
     POICalloutSet,
     generate_3d_poi_callouts,
     generate_3d_suspension_bridge_mesh,

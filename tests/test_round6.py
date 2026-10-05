@@ -7,7 +7,6 @@ import unittest
 
 from osm2threejs import (
     FurniturePlacementReport,
-    StreetFurnitureInstance,
     WeatherParticleFX,
     WeatherType,
     generate_weather_particle_system,

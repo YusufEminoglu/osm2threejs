@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 import math
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Any, Sequence
 
 
@@ -157,7 +157,7 @@ def instantiate_street_furniture(
             ny = dx / sl
             instances.append(
                 StreetFurnitureInstance(
-                    furniture_id=f"furn_hydrant_1",
+                    furniture_id="furn_hydrant_1",
                     furniture_type="FIRE_HYDRANT",
                     position_3d=(p1[0] + nx * lateral_offset, p1[1] + ny * lateral_offset, p1[2]),
                     rotation_degrees=0.0,

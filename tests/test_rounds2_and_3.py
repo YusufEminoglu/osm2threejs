@@ -6,8 +6,6 @@ from __future__ import annotations
 import unittest
 
 from osm2threejs import (
-    BridgeDeckMesh,
-    BuildingThermalLoss,
     CityLightingRig,
     RoadGeometry3D,
     ThermalEnvelopeReport,

@@ -8,7 +8,6 @@ from datetime import datetime, timezone
 
 from osm2threejs import (
     CitySolarReport,
-    RoofMesh3D,
     RoofType,
     SolarPosition,
     calculate_solar_position,

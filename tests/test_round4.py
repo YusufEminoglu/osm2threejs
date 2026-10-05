@@ -6,7 +6,6 @@ from __future__ import annotations
 import unittest
 
 from osm2threejs import (
-    CameraKeyframe3D,
     CinematicFlythroughPath,
     GerstnerWaveParams,
     WaterSurfaceMesh3D,
