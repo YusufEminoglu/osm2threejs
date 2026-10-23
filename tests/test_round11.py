@@ -18,7 +18,9 @@ from osm2threejs import (
 class TestOsm2ThreeJsRound11(unittest.TestCase):
     def test_helipad_aviation_lighting(self) -> None:
         prof = HelipadLightingProfile(perimeter_lights_count=18, beacon_light_color_hex="#00ff44")
-        res = generate_3d_helipad_mesh(center_coordinates=(0.0, 0.0, 30.0), touchdown_diameter_m=20.0, lighting=prof)
+        res = generate_3d_helipad_mesh(
+            center_coordinates=(0.0, 0.0, 30.0), touchdown_diameter_m=20.0, lighting=prof
+        )
 
         self.assertIsInstance(res, HelipadAviation3D)
         self.assertEqual(res.touchdown_diameter_m, 20.0)
@@ -34,7 +36,9 @@ class TestOsm2ThreeJsRound11(unittest.TestCase):
         spec = DockBerthSpec(pier_length_m=100.0, num_finger_piers=6, berth_capacity_boats=12)
         buoys = [(120.0, 10.0), (120.0, -10.0)]
 
-        res = generate_3d_marina_harbor_mesh(pier_line, dock_spec=spec, navigation_buoys_coords=buoys)
+        res = generate_3d_marina_harbor_mesh(
+            pier_line, dock_spec=spec, navigation_buoys_coords=buoys
+        )
 
         self.assertIsInstance(res, MarinaHarborGeometry3D)
         self.assertEqual(res.total_berths_count, 12)

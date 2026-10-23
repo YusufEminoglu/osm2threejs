@@ -27,6 +27,7 @@ class MarinaHarborGeometry3D:
     breakwater_mesh: dict[str, Any]
 
     def to_dict(self) -> dict[str, Any]:
+        """Return a JSON-serialisable summary of the marina and dock geometry."""
         return {
             "harbor_id": self.harbor_id,
             "pier_length_m": round(self.total_pier_length_m, 1),
@@ -80,8 +81,20 @@ def generate_3d_marina_harbor_mesh(
                 # Left finger
                 f_idx = len(docks_verts)
                 docks_verts.append((fx - nx * w2, fy - ny * w2, z))
-                docks_verts.append((fx - nx * (w2 + spec.finger_length_m), fy - ny * (w2 + spec.finger_length_m), z))
-                docks_verts.append((fx - nx * (w2 + spec.finger_length_m) + ux * 1.5, fy - ny * (w2 + spec.finger_length_m) + uy * 1.5, z))
+                docks_verts.append(
+                    (
+                        fx - nx * (w2 + spec.finger_length_m),
+                        fy - ny * (w2 + spec.finger_length_m),
+                        z,
+                    )
+                )
+                docks_verts.append(
+                    (
+                        fx - nx * (w2 + spec.finger_length_m) + ux * 1.5,
+                        fy - ny * (w2 + spec.finger_length_m) + uy * 1.5,
+                        z,
+                    )
+                )
                 docks_verts.append((fx - nx * w2 + ux * 1.5, fy - ny * w2 + uy * 1.5, z))
 
                 docks_faces.append((f_idx, f_idx + 1, f_idx + 2))

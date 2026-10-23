@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+### Added
+- Public API, edge-case, and error-path test suite covering top-level helpers, fetcher caching/geocoding, CLI paths, weather variants, roof fallbacks, and exporter edge cases.
+- Complete docstrings and type annotations across every function and method in `src/`.
+
+### Fixed
+- `BoundingBox.__post_init__` now correctly swaps reversed longitude/latitude corners instead of collapsing both bounds to the same value.
+- Corrected the roof-topology and export-format descriptions in the README, and aligned the documented CLI theme names with the real theme catalog.
+
+### Changed
+- README now documents installation, `dev`/`geo` extras, feature modules, and a public API reference table.
+- `pyproject.toml` declares SPDX license metadata with `license-files` and a modern setuptools build requirement; hard-coded SDK version strings updated to 0.12.1.
+
 ## [0.12.0] - 2026-08-30
 ### Added
 - **3D Rooftop & Ground Helipad with Aviation Lighting (`helipad_aviation_lighting_builder.py`)**: Added `generate_3d_helipad_mesh` generating ICAO Annex 14 compliant helipad touchdown circles and perimeter LED beacons.

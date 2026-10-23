@@ -33,7 +33,9 @@ class TestOsm2ThreeJsRound7(unittest.TestCase):
     def test_billboard_lod_manager(self) -> None:
         footprint = [(0.0, 0.0), (30.0, 0.0), (30.0, 20.0), (0.0, 20.0)]
         cfg = LODDistanceConfig(lod0_max_distance_m=200.0, lod1_max_distance_m=600.0)
-        lod_set = generate_lod_building_levels(footprint, building_id="Tower_Alpha", height_m=50.0, distance_config=cfg)
+        lod_set = generate_lod_building_levels(
+            footprint, building_id="Tower_Alpha", height_m=50.0, distance_config=cfg
+        )
 
         self.assertIsInstance(lod_set, BuildingLODSet)
         self.assertEqual(lod_set.building_id, "Tower_Alpha")

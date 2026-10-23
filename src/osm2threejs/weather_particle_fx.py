@@ -26,6 +26,7 @@ class WeatherParticleFX:
     bounding_box_size_m: tuple[float, float, float] = (500.0, 500.0, 150.0)
 
     def to_threejs_config(self) -> dict[str, Any]:
+        """Return the particle system configuration for the Three.js front-end."""
         return {
             "type": self.weather_type.value,
             "count": self.particle_count,

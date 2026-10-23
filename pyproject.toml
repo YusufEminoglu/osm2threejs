@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=61.0.0", "wheel"]
+requires = ["setuptools>=77.0.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -11,6 +11,7 @@ authors = [
 description = "Pure-Python 3D City & Scene Generator, Rooftop Helipads & Nautical Marinas Suite."
 readme = "README.md"
 license = "MIT"
+license-files = ["LICENSE"]
 requires-python = ">=3.9"
 keywords = [
     "osm",
@@ -46,6 +47,8 @@ classifiers = [
 dependencies = []
 
 [project.optional-dependencies]
+# Core engine itself uses only the Python standard library. The `geo` extra
+# installs optional GIS interoperability tooling for downstream analysis.
 geo = [
     "shapely>=2.0.0",
     "geopandas>=0.12.0",

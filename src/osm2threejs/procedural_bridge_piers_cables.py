@@ -26,6 +26,7 @@ class BridgeStructure3D:
     hanger_count: int
 
     def to_dict(self) -> dict[str, Any]:
+        """Return a JSON-serialisable summary of the bridge structure geometry."""
         return {
             "bridge_id": self.bridge_id,
             "pylon_type": self.pylon_type.value,

@@ -21,7 +21,7 @@ OVERPASS_MIRRORS = (
     "https://overpass.private.coffee/api/interpreter",
 )
 NOMINATIM_ENDPOINT = "https://nominatim.openstreetmap.org/search"
-DEFAULT_USER_AGENT = "osm2threejs-sdk/0.1.0 (https://github.com/YusufEminoglu/osm2threejs)"
+DEFAULT_USER_AGENT = "osm2threejs-sdk/0.12.1 (https://gitlab.com/geospacephilo/osm2threejs)"
 CACHE_TTL_SECONDS = 7 * 24 * 3600  # 1 week
 
 
@@ -39,15 +39,19 @@ class BoundingBox:
     max_lat: float
 
     def __post_init__(self) -> None:
+        """Normalise the box so that min/max corners are correctly ordered."""
         if self.min_lon > self.max_lon:
-            object.__setattr__(self, "min_lon", self.max_lon)
-            object.__setattr__(self, "max_lon", self.min_lon)
+            min_lon, max_lon = self.max_lon, self.min_lon
+            object.__setattr__(self, "min_lon", min_lon)
+            object.__setattr__(self, "max_lon", max_lon)
         if self.min_lat > self.max_lat:
-            object.__setattr__(self, "min_lat", self.max_lat)
-            object.__setattr__(self, "max_lat", self.min_lat)
+            min_lat, max_lat = self.max_lat, self.min_lat
+            object.__setattr__(self, "min_lat", min_lat)
+            object.__setattr__(self, "max_lat", max_lat)
 
     @property
     def center(self) -> tuple[float, float]:
+        """Return the (lon, lat) geographic centre of the box."""
         return (self.min_lon + self.max_lon) / 2.0, (self.min_lat + self.max_lat) / 2.0
 
     @property
@@ -56,16 +60,19 @@ class BoundingBox:
         return f"{self.min_lat:.6f},{self.min_lon:.6f},{self.max_lat:.6f},{self.max_lon:.6f}"
 
     def to_tuple(self) -> tuple[float, float, float, float]:
+        """Return the box as a (min_lon, min_lat, max_lon, max_lat) tuple."""
         return (self.min_lon, self.min_lat, self.max_lon, self.max_lat)
 
 
 def _get_cache_dir() -> str:
+    """Return (creating it if needed) the on-disk response cache directory."""
     path = os.path.join(tempfile.gettempdir(), "osm2threejs_cache")
     os.makedirs(path, exist_ok=True)
     return path
 
 
 def _get_cached_query(query: str) -> dict[str, Any] | None:
+    """Return the cached response for a query, or None when missing or expired."""
     digest = hashlib.sha256(query.encode("utf-8")).hexdigest()[:40]
     path = os.path.join(_get_cache_dir(), f"{digest}.json")
     if not os.path.isfile(path):
@@ -81,6 +88,7 @@ def _get_cached_query(query: str) -> dict[str, Any] | None:
 
 
 def _save_cached_query(query: str, data: dict[str, Any]) -> None:
+    """Persist a response to the on-disk cache, silently ignoring write failures."""
     digest = hashlib.sha256(query.encode("utf-8")).hexdigest()[:40]
     path = os.path.join(_get_cache_dir(), f"{digest}.json")
     try:
@@ -169,6 +177,7 @@ class OsmDataFetcher:
     """High-performance OpenStreetMap Overpass client for 3D city scene elements."""
 
     def __init__(self, endpoints: tuple[str, ...] = OVERPASS_MIRRORS) -> None:
+        """Initialise the fetcher with the ordered Overpass mirror endpoints to try."""
         self.endpoints = endpoints
 
     def build_study_query(self, bbox: BoundingBox) -> str:

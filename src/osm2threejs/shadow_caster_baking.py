@@ -17,16 +17,19 @@ class ShadowBakeResult:
     shadow_polygons: list[list[tuple[float, float]]]
 
     def to_geojson(self) -> dict[str, Any]:
+        """Return the baked shadow polygons as a 2D GeoJSON FeatureCollection."""
         features = []
         for poly in self.shadow_polygons:
-            features.append({
-                "type": "Feature",
-                "properties": {"type": "GROUND_SHADOW"},
-                "geometry": {
-                    "type": "Polygon",
-                    "coordinates": [[[round(p[0], 2), round(p[1], 2)] for p in poly]],
-                },
-            })
+            features.append(
+                {
+                    "type": "Feature",
+                    "properties": {"type": "GROUND_SHADOW"},
+                    "geometry": {
+                        "type": "Polygon",
+                        "coordinates": [[[round(p[0], 2), round(p[1], 2)] for p in poly]],
+                    },
+                }
+            )
         return {"type": "FeatureCollection", "features": features}
 
 
@@ -76,7 +79,10 @@ def bake_static_building_shadows(
         # Shoelace area
         a = 0.0
         for j in range(len(combined_poly) - 1):
-            a += combined_poly[j][0] * combined_poly[j + 1][1] - combined_poly[j + 1][0] * combined_poly[j][1]
+            a += (
+                combined_poly[j][0] * combined_poly[j + 1][1]
+                - combined_poly[j + 1][0] * combined_poly[j][1]
+            )
         tot_shadow_area += abs(a) * 0.5
 
     return ShadowBakeResult(

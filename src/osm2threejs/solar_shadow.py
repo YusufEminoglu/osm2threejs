@@ -32,6 +32,7 @@ class BuildingSolarAssessment:
     annual_energy_potential_mwh: float
 
     def to_dict(self) -> dict[str, Any]:
+        """Return a JSON-serialisable summary of the building solar assessment."""
         return {
             "building_id": self.building_id,
             "height": round(self.height, 2),
@@ -53,6 +54,7 @@ class CitySolarReport:
     buildings: list[BuildingSolarAssessment]
 
     def to_dict(self) -> dict[str, Any]:
+        """Return a JSON-serialisable summary of the whole-city solar report."""
         return {
             "solar_azimuth": round(self.solar_position.azimuth_degrees, 2),
             "solar_elevation": round(self.solar_position.elevation_degrees, 2),
@@ -99,12 +101,17 @@ def calculate_solar_position(
     hour_angle = math.radians(15.0 * (solar_time - 12.0))
 
     # Solar Elevation angle alpha
-    sin_elev = math.sin(lat_rad) * math.sin(decl_rad) + math.cos(lat_rad) * math.cos(decl_rad) * math.cos(hour_angle)
+    sin_elev = math.sin(lat_rad) * math.sin(decl_rad) + math.cos(lat_rad) * math.cos(
+        decl_rad
+    ) * math.cos(hour_angle)
     sin_elev = max(-1.0, min(1.0, sin_elev))
     elevation = math.degrees(math.asin(sin_elev))
 
     # Solar Azimuth angle gamma
-    cos_az = (math.sin(decl_rad) * math.cos(lat_rad) - math.cos(decl_rad) * math.sin(lat_rad) * math.cos(hour_angle)) / max(1e-6, math.cos(math.radians(elevation)))
+    cos_az = (
+        math.sin(decl_rad) * math.cos(lat_rad)
+        - math.cos(decl_rad) * math.sin(lat_rad) * math.cos(hour_angle)
+    ) / max(1e-6, math.cos(math.radians(elevation)))
     cos_az = max(-1.0, min(1.0, cos_az))
     azimuth = math.degrees(math.acos(cos_az))
     if math.sin(hour_angle) > 0:

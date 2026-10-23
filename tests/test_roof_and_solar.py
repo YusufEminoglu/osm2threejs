@@ -24,27 +24,37 @@ class TestRoofAndSolar(unittest.TestCase):
 
     def test_gabled_and_hipped_roof_mesh_generation(self) -> None:
         # Gabled
-        gabled = generate_roof_mesh(self.rect_footprint, base_height=12.0, roof_type=RoofType.GABLED, roof_height=4.0)
+        gabled = generate_roof_mesh(
+            self.rect_footprint, base_height=12.0, roof_type=RoofType.GABLED, roof_height=4.0
+        )
         self.assertEqual(gabled.roof_type, RoofType.GABLED)
         self.assertGreater(len(gabled.vertices), 4)
         self.assertGreater(len(gabled.faces), 0)
         self.assertGreater(gabled.area, 0.0)
 
         # Hipped
-        hipped = generate_roof_mesh(self.rect_footprint, base_height=12.0, roof_type=RoofType.HIPPED, roof_height=3.5)
+        hipped = generate_roof_mesh(
+            self.rect_footprint, base_height=12.0, roof_type=RoofType.HIPPED, roof_height=3.5
+        )
         self.assertEqual(hipped.roof_type, RoofType.HIPPED)
         self.assertGreater(len(hipped.faces), 0)
 
         # Pyramidal
-        pyramidal = generate_roof_mesh(self.square_footprint, base_height=10.0, roof_type=RoofType.PYRAMIDAL, roof_height=5.0)
+        pyramidal = generate_roof_mesh(
+            self.square_footprint, base_height=10.0, roof_type=RoofType.PYRAMIDAL, roof_height=5.0
+        )
         self.assertEqual(pyramidal.roof_type, RoofType.PYRAMIDAL)
         self.assertEqual(len(pyramidal.faces), 4)
 
         # Mansard & Skillion
-        mansard = generate_roof_mesh(self.square_footprint, base_height=10.0, roof_type=RoofType.MANSARD)
+        mansard = generate_roof_mesh(
+            self.square_footprint, base_height=10.0, roof_type=RoofType.MANSARD
+        )
         self.assertGreater(len(mansard.faces), 4)
 
-        skillion = generate_roof_mesh(self.square_footprint, base_height=10.0, roof_type=RoofType.SKILLION)
+        skillion = generate_roof_mesh(
+            self.square_footprint, base_height=10.0, roof_type=RoofType.SKILLION
+        )
         self.assertGreater(len(skillion.faces), 0)
 
     def test_solar_position_and_shadow_projection(self) -> None:
@@ -58,7 +68,9 @@ class TestRoofAndSolar(unittest.TestCase):
         self.assertGreater(pos.azimuth_degrees, 90.0)
 
         # Shadow projection of 15m building
-        shadow_len, shadow_poly = project_building_shadow(self.square_footprint, height=15.0, solar_pos=pos)
+        shadow_len, shadow_poly = project_building_shadow(
+            self.square_footprint, height=15.0, solar_pos=pos
+        )
         self.assertGreater(shadow_len, 0.0)
         self.assertGreaterEqual(len(shadow_poly), 4)
 

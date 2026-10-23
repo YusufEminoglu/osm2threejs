@@ -27,6 +27,7 @@ class NoiseBarrierMesh3D:
     sound_transmission_class_stc_db: float
 
     def to_dict(self) -> dict[str, Any]:
+        """Return a JSON-serialisable summary of the noise barrier geometry."""
         return {
             "barrier_id": self.barrier_id,
             "material": self.material.value,

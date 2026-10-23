@@ -29,6 +29,7 @@ class TrafficSimulationMesh:
     vehicles: list[TrafficVehicle3D]
 
     def to_threejs_instances(self) -> list[dict[str, Any]]:
+        """Return the vehicles as a list of Three.js instance descriptors."""
         return [
             {
                 "id": v.vehicle_id,
@@ -93,7 +94,7 @@ def generate_traffic_flow_geometry(
 
                 vehicles.append(
                     TrafficVehicle3D(
-                        vehicle_id=f"veh_{road_id}_{v_idx+1}",
+                        vehicle_id=f"veh_{road_id}_{v_idx + 1}",
                         vehicle_type=v_type,
                         position_3d=(vx, vy, vz),
                         heading_degrees=heading,

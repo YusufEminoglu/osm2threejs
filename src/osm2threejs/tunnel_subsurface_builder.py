@@ -20,6 +20,7 @@ class TunnelGeometry3D:
     invert_road_deck_z: float = 0.0
 
     def to_dict(self) -> dict[str, Any]:
+        """Return a JSON-serialisable summary of the tunnel geometry."""
         return {
             "tunnel_id": self.tunnel_id,
             "length_m": round(self.tunnel_length_m, 1),

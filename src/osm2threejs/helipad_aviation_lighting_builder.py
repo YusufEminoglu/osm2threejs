@@ -26,6 +26,7 @@ class HelipadAviation3D:
     aviation_lighting_nodes: list[dict[str, Any]]
 
     def to_dict(self) -> dict[str, Any]:
+        """Return a JSON-serialisable summary of the helipad mesh and lighting."""
         return {
             "helipad_id": self.helipad_id,
             "diameter_m": round(self.touchdown_diameter_m, 1),
@@ -68,12 +69,14 @@ def generate_3d_helipad_mesh(
         ang = (2.0 * math.pi / prof.perimeter_lights_count) * i
         lx = cx + (r * 1.05) * math.cos(ang)
         ly = cy + (r * 1.05) * math.sin(ang)
-        lights.append({
-            "id": f"PERIMETER_LED_{i+1}",
-            "position": (round(lx, 2), round(ly, 2), round(cz + 0.15, 2)),
-            "color": prof.beacon_light_color_hex,
-            "intensity_cd": 100.0,
-        })
+        lights.append(
+            {
+                "id": f"PERIMETER_LED_{i + 1}",
+                "position": (round(lx, 2), round(ly, 2), round(cz + 0.15, 2)),
+                "color": prof.beacon_light_color_hex,
+                "intensity_cd": 100.0,
+            }
+        )
 
     return HelipadAviation3D(
         helipad_id="HELIPAD_ROOFTOP_1",

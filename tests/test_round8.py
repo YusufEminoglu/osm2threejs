@@ -17,7 +17,9 @@ from osm2threejs import (
 class TestOsm2ThreeJsRound8(unittest.TestCase):
     def test_procedural_suspension_bridge(self) -> None:
         path = [(0.0, 0.0, 20.0), (1000.0, 0.0, 20.0)]
-        bridge = generate_3d_suspension_bridge_mesh(path, bridge_id="GoldenGate", tower_height_m=70.0, num_hangers=20)
+        bridge = generate_3d_suspension_bridge_mesh(
+            path, bridge_id="GoldenGate", tower_height_m=70.0, num_hangers=20
+        )
 
         self.assertIsInstance(bridge, BridgeStructure3D)
         self.assertEqual(bridge.bridge_id, "GoldenGate")
@@ -32,8 +34,18 @@ class TestOsm2ThreeJsRound8(unittest.TestCase):
 
     def test_interactive_poi_callouts(self) -> None:
         landmarks = [
-            {"id": "landmark_1", "name": "Hagia Sophia", "category": "CIVIC", "position": (100.0, 200.0, 30.0)},
-            {"id": "landmark_2", "name": "Galata Tower", "category": "LANDMARK", "position": (500.0, 600.0, 65.0)},
+            {
+                "id": "landmark_1",
+                "name": "Hagia Sophia",
+                "category": "CIVIC",
+                "position": (100.0, 200.0, 30.0),
+            },
+            {
+                "id": "landmark_2",
+                "name": "Galata Tower",
+                "category": "LANDMARK",
+                "position": (500.0, 600.0, 65.0),
+            },
         ]
 
         callouts = generate_3d_poi_callouts(landmarks, city_name="Istanbul 3D")

@@ -38,7 +38,9 @@ class TestOsm2ThreeJsRound6(unittest.TestCase):
 
     def test_weather_particle_fx(self) -> None:
         # Rain
-        rain_fx = generate_weather_particle_system(WeatherType.RAIN, intensity=1.5, wind_speed_ms=8.0)
+        rain_fx = generate_weather_particle_system(
+            WeatherType.RAIN, intensity=1.5, wind_speed_ms=8.0
+        )
         self.assertIsInstance(rain_fx, WeatherParticleFX)
         self.assertEqual(rain_fx.weather_type, WeatherType.RAIN)
         self.assertGreater(rain_fx.particle_count, 10000)

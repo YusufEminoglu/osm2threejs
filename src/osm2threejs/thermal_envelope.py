@@ -22,6 +22,7 @@ class BuildingThermalLoss:
     window_to_wall_ratio: float
 
     def to_dict(self) -> dict[str, Any]:
+        """Return a JSON-serialisable summary of the building thermal assessment."""
         return {
             "building_id": self.building_id,
             "volume_m3": round(self.volume_m3, 1),
@@ -42,6 +43,7 @@ class ThermalEnvelopeReport:
     buildings: list[BuildingThermalLoss]
 
     def to_dict(self) -> dict[str, Any]:
+        """Return a JSON-serialisable summary of the whole-city thermal report."""
         return {
             "total_buildings": self.total_buildings,
             "total_city_heat_loss_mwh": round(self.total_city_heat_loss_mwh, 2),
@@ -51,7 +53,10 @@ class ThermalEnvelopeReport:
         }
 
 
-def _calc_footprint_perimeter_and_area(footprint: Sequence[tuple[float, float]]) -> tuple[float, float]:
+def _calc_footprint_perimeter_and_area(
+    footprint: Sequence[tuple[float, float]],
+) -> tuple[float, float]:
+    """Compute the perimeter and absolute area of a 2D footprint ring."""
     n = len(footprint)
     if n < 3:
         return 0.0, 0.0
@@ -72,7 +77,7 @@ def compute_building_thermal_loss(
     cooling_degree_days: float = 800.0,
     default_wall_u_val: float = 0.60,  # W/m2.K
     default_roof_u_val: float = 0.35,  # W/m2.K
-    default_window_u_val: float = 1.80, # W/m2.K
+    default_window_u_val: float = 1.80,  # W/m2.K
     window_to_wall_ratio: float = 0.30,
 ) -> ThermalEnvelopeReport:
     """Calculate 3D thermal transmission heat loss and cooling loads across urban buildings."""
@@ -97,7 +102,11 @@ def compute_building_thermal_loss(
         compactness_list.append(compactness)
 
         # Transmission Heat Transfer Coefficient H_T (W/K)
-        h_t = (opaque_wall_area * default_wall_u_val + window_area * default_window_u_val + roof_area * default_roof_u_val)
+        h_t = (
+            opaque_wall_area * default_wall_u_val
+            + window_area * default_window_u_val
+            + roof_area * default_roof_u_val
+        )
 
         # Annual Heating Loss Q_heat (kWh) = (H_T * HDD * 24) / 1000
         q_heat = (h_t * heating_degree_days * 24.0) / 1000.0

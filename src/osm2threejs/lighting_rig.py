@@ -31,6 +31,7 @@ class CityLightingRig:
     streetlamps: list[StreetlampInstance]
 
     def to_dict(self) -> dict[str, Any]:
+        """Return a JSON-serialisable summary of the lighting rig configuration."""
         return {
             "night_mode": self.is_night_mode,
             "ambient_color": self.ambient_light_color,

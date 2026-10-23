@@ -30,6 +30,7 @@ class RailwayGeometry3D:
     overhead_wire_vertices: list[tuple[float, float, float]]
 
     def to_dict(self) -> dict[str, Any]:
+        """Return a JSON-serialisable summary of the railway geometry."""
         return {
             "track_id": self.track_id,
             "track_length_m": round(self.track_length_m, 1),
@@ -87,7 +88,9 @@ def generate_3d_railway_mesh(
 
         left_rails.append((round(lx, 3), round(ly, 3), round(curr[2] + p.rail_height_m, 3)))
         right_rails.append((round(rx, 3), round(ry, 3), round(curr[2] + p.rail_height_m, 3)))
-        catenary_wire.append((round(curr[0], 3), round(curr[1], 3), round(curr[2] + p.catenary_wire_height_m, 3)))
+        catenary_wire.append(
+            (round(curr[0], 3), round(curr[1], 3), round(curr[2] + p.catenary_wire_height_m, 3))
+        )
 
         if i > 0:
             tot_len += math.dist(pts[i - 1], pts[i])

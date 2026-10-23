@@ -26,6 +26,7 @@ class PedestrianPlazaGeometry3D:
     crosswalk_decal_mesh: dict[str, Any]
 
     def to_dict(self) -> dict[str, Any]:
+        """Return a JSON-serialisable summary of the plaza and crosswalk geometry."""
         return {
             "plaza_id": self.plaza_id,
             "plaza_area_m2": round(self.plaza_area_m2, 1),
@@ -85,8 +86,20 @@ def generate_3d_pedestrian_plaza_mesh(
                         w2 = crosswalk_width_m / 2.0
                         decal_verts.append((sx - nx * w2, sy - ny * w2, 0.02))
                         decal_verts.append((sx + nx * w2, sy + ny * w2, 0.02))
-                        decal_verts.append((sx + nx * w2 + ux * stripe_width, sy + ny * w2 + uy * stripe_width, 0.02))
-                        decal_verts.append((sx - nx * w2 + ux * stripe_width, sy - ny * w2 + uy * stripe_width, 0.02))
+                        decal_verts.append(
+                            (
+                                sx + nx * w2 + ux * stripe_width,
+                                sy + ny * w2 + uy * stripe_width,
+                                0.02,
+                            )
+                        )
+                        decal_verts.append(
+                            (
+                                sx - nx * w2 + ux * stripe_width,
+                                sy - ny * w2 + uy * stripe_width,
+                                0.02,
+                            )
+                        )
 
                         decal_faces.append((v_start, v_start + 1, v_start + 2))
                         decal_faces.append((v_start, v_start + 2, v_start + 3))

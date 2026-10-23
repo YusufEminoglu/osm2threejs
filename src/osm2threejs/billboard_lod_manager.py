@@ -25,6 +25,7 @@ class BuildingLODSet:
     distances: LODDistanceConfig
 
     def to_threejs_lod_node(self) -> dict[str, Any]:
+        """Serialize the LOD set into a Three.js ``LOD`` node descriptor with distance ranges."""
         return {
             "id": self.building_id,
             "lod0_vcount": self.lod0_vertices_count,

@@ -22,6 +22,7 @@ class CinematicFlythroughPath:
     keyframes: list[CameraKeyframe3D]
 
     def to_json_keyframes(self) -> list[dict[str, Any]]:
+        """Serialize the keyframes into a compact list of JSON-ready camera records."""
         return [
             {
                 "time": round(kf.time_seconds, 2),

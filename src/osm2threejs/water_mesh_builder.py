@@ -28,6 +28,7 @@ class WaterSurfaceMesh3D:
     foam_color_hex: str = "#e0fbfc"
 
     def to_dict(self) -> dict[str, Any]:
+        """Return a JSON-serialisable summary of the water surface mesh."""
         return {
             "waterbody_id": self.waterbody_id,
             "vertex_count": len(self.vertices),

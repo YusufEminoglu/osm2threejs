@@ -46,7 +46,9 @@ def generate_3d_road_mesh(
     ]
     n = len(coords_3d)
     if n < 2:
-        return RoadGeometry3D(road_id=road_id, road_class=road_class, width_meters=width, vertices=[], faces=[])
+        return RoadGeometry3D(
+            road_id=road_id, road_class=road_class, width_meters=width, vertices=[], faces=[]
+        )
 
     half_w = width / 2.0
     vertices: list[tuple[float, float, float]] = []

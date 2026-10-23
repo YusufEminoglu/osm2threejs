@@ -27,6 +27,7 @@ class RenewableEnergyScene3D:
     solar_arrays_mesh: dict[str, Any]
 
     def to_dict(self) -> dict[str, Any]:
+        """Return a JSON-serialisable summary of the renewable energy assets."""
         return {
             "turbines_count": self.total_turbines_count,
             "solar_panels_count": self.total_solar_panels_count,

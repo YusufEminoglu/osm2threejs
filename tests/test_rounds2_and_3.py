@@ -26,7 +26,9 @@ class TestOsm2ThreeJsRounds2And3(unittest.TestCase):
         self.assertGreater(len(tree.vertices), 10)
         self.assertGreater(len(tree.faces), 10)
 
-        forest = generate_forest_canopy_mesh([(0, 0, 0), (10, 10, 0), (20, 20, 0)], tree_type=TreeType.CONIFER)
+        forest = generate_forest_canopy_mesh(
+            [(0, 0, 0), (10, 10, 0), (20, 20, 0)], tree_type=TreeType.CONIFER
+        )
         self.assertEqual(len(forest), 3)
 
     def test_thermal_envelope_heat_loss(self) -> None:

@@ -29,6 +29,7 @@ class ThemePalette:
     fog_density: float = 0.0015
 
     def to_dict(self) -> dict[str, Any]:
+        """Return the palette as a camelCase dictionary for the Three.js front-end."""
         return {
             "name": self.name,
             "islandColor": self.island_color,

@@ -125,7 +125,7 @@ def export_to_geojson_3d(city: CityModel3D, output_path: str | None = None) -> d
 
 
 def export_to_obj(city: CityModel3D, output_path: str) -> None:
-    """Export 3D City mesh to Wavefront OBJ format with materials."""
+    """Export 3D City mesh to Wavefront OBJ format."""
     center_lon, center_lat = city.bbox.center
     cos_lat = math.cos(math.radians(center_lat))
     m_per_deg_lat = 111132.0

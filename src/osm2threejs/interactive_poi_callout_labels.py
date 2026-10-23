@@ -23,6 +23,7 @@ class POICalloutSet:
     pins: list[CalloutPin3D]
 
     def to_threejs_overlay_json(self) -> dict[str, Any]:
+        """Return the overlay descriptor consumed by the screen-space label layer."""
         return {
             "city": self.city_name,
             "total_pins": len(self.pins),
@@ -56,7 +57,7 @@ def generate_3d_poi_callouts(
 
         pins.append(
             CalloutPin3D(
-                poi_id=str(item.get("id", f"poi_{len(pins)+1}")),
+                poi_id=str(item.get("id", f"poi_{len(pins) + 1}")),
                 label_text=str(item.get("name", "Landmark")),
                 category=str(item.get("category", "LANDMARK")),
                 world_position_3d=pos_3d,

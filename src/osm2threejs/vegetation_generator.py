@@ -10,11 +10,11 @@ from typing import Sequence
 
 
 class TreeType(str, enum.Enum):
-    BROADLEAF = "broadleaf"      # Round deciduous canopy
-    CONIFER = "conifer"          # Conical evergreen pine
-    PALM = "palm"                # Slender trunk with crown fronds
-    COLUMNAR = "columnar"        # Narrow tall cypress
-    SHRUB = "shrub"              # Low ground bush
+    BROADLEAF = "broadleaf"  # Round deciduous canopy
+    CONIFER = "conifer"  # Conical evergreen pine
+    PALM = "palm"  # Slender trunk with crown fronds
+    COLUMNAR = "columnar"  # Narrow tall cypress
+    SHRUB = "shrub"  # Low ground bush
 
 
 @dataclass
@@ -56,7 +56,13 @@ def generate_procedural_tree_mesh(
     # Top ring (z + trunk_h)
     for i in range(t_segs):
         ang = i * (2.0 * math.pi / t_segs)
-        vertices.append((x + trunk_radius * 0.8 * math.cos(ang), y + trunk_radius * 0.8 * math.sin(ang), z + trunk_h))
+        vertices.append(
+            (
+                x + trunk_radius * 0.8 * math.cos(ang),
+                y + trunk_radius * 0.8 * math.sin(ang),
+                z + trunk_h,
+            )
+        )
 
     for i in range(t_segs):
         j = (i + 1) % t_segs
@@ -77,7 +83,9 @@ def generate_procedural_tree_mesh(
         vertices.append((x, y, canopy_top_z))
         for i in range(c_segs):
             ang = i * (2.0 * math.pi / c_segs)
-            vertices.append((x + crown_radius * math.cos(ang), y + crown_radius * math.sin(ang), canopy_base_z))
+            vertices.append(
+                (x + crown_radius * math.cos(ang), y + crown_radius * math.sin(ang), canopy_base_z)
+            )
         for i in range(c_segs):
             j = (i + 1) % c_segs
             faces.append((apex_idx, crown_base_idx + 1 + i, crown_base_idx + 1 + j))
@@ -93,7 +101,9 @@ def generate_procedural_tree_mesh(
         ring_start = len(vertices)
         for i in range(c_segs):
             ang = i * (2.0 * math.pi / c_segs)
-            vertices.append((x + crown_radius * math.cos(ang), y + crown_radius * math.sin(ang), mid_z))
+            vertices.append(
+                (x + crown_radius * math.cos(ang), y + crown_radius * math.sin(ang), mid_z)
+            )
 
         for i in range(c_segs):
             j = (i + 1) % c_segs

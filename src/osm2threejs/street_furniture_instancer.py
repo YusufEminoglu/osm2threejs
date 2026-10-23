@@ -27,6 +27,7 @@ class FurniturePlacementReport:
     instances: list[StreetFurnitureInstance]
 
     def to_threejs_instances(self) -> list[dict[str, Any]]:
+        """Return the placed furniture as a list of Three.js instance descriptors."""
         return [
             {
                 "id": inst.furniture_id,
@@ -115,7 +116,11 @@ def instantiate_street_furniture(
 
                     # Benches
                     if abs(cur_dist % bench_spacing_m) < step * 0.6 and cur_dist > 5.0:
-                        pos = (cx + nx * (lateral_offset + 0.8), cy + ny * (lateral_offset + 0.8), cz)
+                        pos = (
+                            cx + nx * (lateral_offset + 0.8),
+                            cy + ny * (lateral_offset + 0.8),
+                            cz,
+                        )
                         instances.append(
                             StreetFurnitureInstance(
                                 furniture_id=f"furn_bench_{inst_idx}",
@@ -129,7 +134,11 @@ def instantiate_street_furniture(
                         inst_idx += 1
 
                         # Waste bin next to bench
-                        pos_bin = (cx + nx * (lateral_offset + 1.2) + dx * 0.05, cy + ny * (lateral_offset + 1.2) + dy * 0.05, cz)
+                        pos_bin = (
+                            cx + nx * (lateral_offset + 1.2) + dx * 0.05,
+                            cy + ny * (lateral_offset + 1.2) + dy * 0.05,
+                            cz,
+                        )
                         instances.append(
                             StreetFurnitureInstance(
                                 furniture_id=f"furn_bin_{inst_idx}",

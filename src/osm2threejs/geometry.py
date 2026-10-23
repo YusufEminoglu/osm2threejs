@@ -93,14 +93,17 @@ class CityModel3D:
 
     @property
     def building_count(self) -> int:
+        """Number of buildings in the model."""
         return len(self.buildings)
 
     @property
     def road_count(self) -> int:
+        """Number of road segments in the model."""
         return len(self.roads)
 
     @property
     def total_road_km(self) -> float:
+        """Total length of all road centrelines in kilometres."""
         total_m = 0.0
         for r in self.roads:
             pts = r.centerline
@@ -122,9 +125,11 @@ class CityModel3D:
 
     @property
     def tree_count(self) -> int:
+        """Number of tree instances in the model."""
         return len(self.trees)
 
     def summary(self) -> dict[str, Any]:
+        """Return a dictionary of high-level scene statistics."""
         return {
             "name": self.name,
             "theme": self.theme.name,
@@ -154,7 +159,7 @@ class CityModel3D:
         export_to_glb(self, output_path)
 
     def to_obj(self, output_path: str) -> None:
-        """Export 3D city mesh into Wavefront OBJ + MTL format."""
+        """Export 3D city mesh into Wavefront OBJ format."""
         from .exporters import export_to_obj
 
         export_to_obj(self, output_path)
@@ -279,6 +284,7 @@ def generate_3d_city(
     min_lon, min_lat, max_lon, max_lat = 180.0, 90.0, -180.0, -90.0
 
     def update_bounds(coords: list[tuple[float, float]]) -> None:
+        """Expand the running min/max bounds to include the given coordinates."""
         nonlocal min_lon, min_lat, max_lon, max_lat
         for lon, lat in coords:
             if lon < min_lon:
@@ -405,5 +411,5 @@ def generate_3d_city(
         parks=parks,
         trees=trees,
         theme=palette,
-        metadata={"generator": "osm2threejs-sdk v0.1.0"},
+        metadata={"generator": "osm2threejs-sdk v0.12.1"},
     )

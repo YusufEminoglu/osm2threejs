@@ -13,6 +13,7 @@ from .themes import get_theme
 
 
 def main(argv: list[str] | None = None) -> int:
+    """Run the osm2threejs command-line interface and return a process exit code."""
     parser = argparse.ArgumentParser(
         prog="osm2threejs",
         description="Headless 3D City Generator from OpenStreetMap into Three.js WebGL & 3D Assets.",

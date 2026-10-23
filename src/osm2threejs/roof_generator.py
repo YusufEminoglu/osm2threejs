@@ -33,6 +33,7 @@ class RoofMesh3D:
     azimuth_degrees: float = 0.0
 
     def to_dict(self) -> dict[str, Any]:
+        """Return a JSON-serialisable summary of the roof mesh."""
         return {
             "roof_type": self.roof_type.value,
             "height": round(self.height, 2),
@@ -55,6 +56,7 @@ def _compute_polygon_centroid(ring: Sequence[tuple[float, float]]) -> tuple[floa
 
 
 def _compute_polygon_bbox(ring: Sequence[tuple[float, float]]) -> tuple[float, float, float, float]:
+    """Compute the axis-aligned (min_x, min_y, max_x, max_y) bounds of a 2D ring."""
     min_x = min(p[0] for p in ring)
     max_x = max(p[0] for p in ring)
     min_y = min(p[1] for p in ring)

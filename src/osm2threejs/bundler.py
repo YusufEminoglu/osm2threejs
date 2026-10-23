@@ -16,6 +16,7 @@ class StandaloneHtmlBundler:
 
     @staticmethod
     def build_html(city: CityModel3D, title: str | None = None) -> str:
+        """Render a city model into a self-contained Three.js WebGL HTML document."""
         center_lon, center_lat = city.bbox.center
         cos_lat = math.cos(math.radians(center_lat))
         m_per_deg_lat = 111132.0
@@ -23,6 +24,7 @@ class StandaloneHtmlBundler:
 
         # Project coordinates to local metric XY (origin at center)
         def to_local_xy(coords: list[tuple[float, float]]) -> list[list[float]]:
+            """Project (lon, lat) pairs to local metric XY metres relative to the scene centre."""
             return [
                 [
                     round((lon - center_lon) * m_per_deg_lon, 2),
