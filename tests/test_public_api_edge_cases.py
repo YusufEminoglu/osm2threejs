@@ -68,6 +68,49 @@ class TestTopLevelApi(unittest.TestCase):
         self.assertEqual(city.building_count, 1)
         self.assertEqual(city.theme.name, "Dark Glow")
 
+    def test_from_geojson_accepts_real_geojson(self) -> None:
+        ring = [[29.0, 41.0], [29.0005, 41.0], [29.0005, 41.0005], [29.0, 41.0005], [29.0, 41.0]]
+        collection = {
+            "type": "FeatureCollection",
+            "features": [
+                {
+                    "type": "Feature",
+                    "properties": {"building": "yes", "height": 12, "roof:shape": "gabled"},
+                    "geometry": {"type": "Polygon", "coordinates": [ring]},
+                },
+                {
+                    "type": "Feature",
+                    "properties": {"highway": "primary", "bridge": True, "name": None},
+                    "geometry": {
+                        "type": "MultiLineString",
+                        "coordinates": [
+                            [[29.0, 41.0], [29.001, 41.001]],
+                            [[29.0, 41.001], [29.001, 41.0]],
+                        ],
+                    },
+                },
+                {
+                    "type": "Feature",
+                    "properties": {"natural": "tree"},
+                    "geometry": {"type": "Point", "coordinates": [29.0002, 41.0002]},
+                },
+                {"type": "Feature", "properties": {}, "geometry": None},
+            ],
+        }
+        for payload in (collection, json.dumps(collection)):
+            city = o3.from_geojson(payload)
+            self.assertEqual(city.building_count, 1)
+            self.assertEqual(city.buildings[0].height_m, 12.0)
+            self.assertEqual(city.buildings[0].roof_shape, "gabled")
+            self.assertEqual(len(city.roads), 2)
+            self.assertTrue(city.roads[0].is_bridge)
+            self.assertEqual(city.roads[0].name, "")
+            self.assertEqual(len(city.trees), 1)
+            self.assertAlmostEqual(city.bbox.max_lon, 29.001)
+
+        single = o3.from_geojson(collection["features"][0])
+        self.assertEqual(single.building_count, 1)
+
     def test_from_bbox_with_stubbed_fetch(self) -> None:
         with mock.patch.object(o3.OsmDataFetcher, "fetch_bbox", return_value=SIMPLE_OSM_DATA):
             city = o3.from_bbox((27.0, 38.0, 27.01, 38.01), name="Box City")

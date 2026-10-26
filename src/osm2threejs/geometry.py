@@ -189,7 +189,7 @@ class CityModel3D:
     def show(self, width: str = "100%", height: int = 550) -> Any:
         """Display 3D interactive viewer in Jupyter Notebook."""
         try:
-            from IPython.display import HTML, display
+            from IPython.display import HTML, display  # type: ignore[import-not-found]
 
             display(HTML(self._repr_html_()))
         except ImportError:
@@ -254,6 +254,74 @@ def _parse_roof_shape(tags: dict[str, str]) -> str:
     shape = tags.get("roof:shape", "flat").lower().strip()
     valid_shapes = {"flat", "gabled", "hipped", "mansard", "pyramidal", "dome", "skillion"}
     return shape if shape in valid_shapes else "flat"
+
+
+def _geojson_tag_value(value: Any) -> str:
+    """Render a GeoJSON property value the way OSM stores tags (always a string)."""
+    if isinstance(value, bool):
+        return "yes" if value else "no"
+    return str(value)
+
+
+def geojson_to_overpass(geojson_data: dict[str, Any]) -> dict[str, Any]:
+    """Convert a GeoJSON Feature/FeatureCollection into Overpass-style ``elements``.
+
+    Feature properties become OSM tags. Points become nodes; LineStrings and the outer
+    ring of each Polygon become ways over synthetic negative node ids. Multi-part
+    geometries emit one element per part. Holes and unsupported geometries are skipped.
+    """
+    if geojson_data.get("type") == "Feature":
+        features = [geojson_data]
+    else:
+        features = list(geojson_data.get("features") or [])
+
+    elements: list[dict[str, Any]] = []
+    next_id = -1
+
+    def add_node(lon: Any, lat: Any, tags: dict[str, str] | None = None) -> int:
+        """Append a node element and return its synthetic id."""
+        nonlocal next_id
+        node_id = next_id
+        next_id -= 1
+        node: dict[str, Any] = {"type": "node", "id": node_id, "lon": float(lon), "lat": float(lat)}
+        if tags:
+            node["tags"] = tags
+        elements.append(node)
+        return node_id
+
+    def add_way(line: list[Any], tags: dict[str, str]) -> None:
+        """Append a way over freshly created nodes for each vertex of ``line``."""
+        nonlocal next_id
+        node_ids = [add_node(pt[0], pt[1]) for pt in line]
+        way_id = next_id
+        next_id -= 1
+        elements.append({"type": "way", "id": way_id, "nodes": node_ids, "tags": tags})
+
+    for feature in features:
+        geometry = feature.get("geometry") or {}
+        props = feature.get("properties") or {}
+        tags = {str(k): _geojson_tag_value(v) for k, v in props.items() if v is not None}
+        geom_type = geometry.get("type")
+        coords = geometry.get("coordinates") or []
+
+        if geom_type == "Point":
+            add_node(coords[0], coords[1], tags)
+        elif geom_type == "MultiPoint":
+            for pt in coords:
+                add_node(pt[0], pt[1], tags)
+        elif geom_type == "LineString":
+            add_way(coords, tags)
+        elif geom_type == "MultiLineString":
+            for line in coords:
+                add_way(line, tags)
+        elif geom_type == "Polygon" and coords:
+            add_way(coords[0], tags)
+        elif geom_type == "MultiPolygon":
+            for polygon in coords:
+                if polygon:
+                    add_way(polygon[0], tags)
+
+    return {"elements": elements}
 
 
 def generate_3d_city(

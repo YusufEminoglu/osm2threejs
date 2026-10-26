@@ -5,6 +5,9 @@ osm2threejs — Pure-Python 3D City Generator from OpenStreetMap into Three.js W
 
 from __future__ import annotations
 
+import json
+from typing import Any
+
 __version__ = "0.12.1"
 __author__ = "Yusuf Eminoğlu"
 
@@ -41,6 +44,7 @@ from .geometry import (
     TreeInstance,
     WaterMesh,
     generate_3d_city,
+    geojson_to_overpass,
 )
 from .harbor_marina_pier_builder import (
     DockBerthSpec,
@@ -205,15 +209,23 @@ def from_place(
 
 
 def from_geojson(
-    geojson_data: dict | str,
+    geojson_data: dict[str, Any] | str,
     theme: str = "Editorial Paper",
     name: str = "Custom 3D City",
     default_building_levels: int = 3,
 ) -> CityModel3D:
-    """Generate a 3D City Model directly from parsed or raw GeoJSON feature collections."""
-    return generate_3d_city(
-        geojson_data, theme=theme, name=name, default_levels=default_building_levels
+    """Generate a 3D City Model from GeoJSON or an Overpass ``elements`` payload.
+
+    ``geojson_data`` may be a dict or a JSON string. GeoJSON Features and
+    FeatureCollections are converted with :func:`geojson_to_overpass` (properties act as
+    OSM tags); dicts that already carry ``elements`` are used as-is.
+    """
+    data: dict[str, Any] = (
+        json.loads(geojson_data) if isinstance(geojson_data, str) else geojson_data
     )
+    if data.get("type") in ("Feature", "FeatureCollection"):
+        data = geojson_to_overpass(data)
+    return generate_3d_city(data, theme=theme, name=name, default_levels=default_building_levels)
 
 
 def list_themes() -> list[str]:
@@ -241,6 +253,7 @@ __all__ = [
     "geocode_place_name",
     "query_overpass",
     "generate_3d_city",
+    "geojson_to_overpass",
     "bundle_city_to_html",
     "StandaloneHtmlBundler",
     "export_to_glb",

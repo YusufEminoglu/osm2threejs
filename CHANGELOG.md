@@ -8,6 +8,11 @@ All notable changes to this project will be documented in this file.
 - Complete docstrings and type annotations across every function and method in `src/`.
 
 ### Fixed
+- `from_geojson` now accepts real GeoJSON. Previously it only understood Overpass `elements`
+  payloads, so a `Feature`/`FeatureCollection` silently produced an empty city and a JSON string
+  raised `AttributeError`. Features are converted by the new `geojson_to_overpass` helper, with
+  properties used as OSM tags (numbers stringified, booleans mapped to `yes`/`no`).
+- mypy is clean (optional `IPython` import, precise `from_geojson` typing).
 - `BoundingBox.__post_init__` now correctly swaps reversed longitude/latitude corners instead of collapsing both bounds to the same value.
 - Corrected the roof-topology and export-format descriptions in the README, and aligned the documented CLI theme names with the real theme catalog.
 

@@ -40,7 +40,7 @@ Designed from the ground up for urban planners, architects, game developers, GIS
 ## 🔬 Core Capabilities
 
 1. **Instant 3D City Generation:**
-   - Build complete 3D digital twins from place names (`from_place("Kadıköy, İstanbul")`), bounding boxes (`from_bbox(...)`), or parsed element dictionaries (`from_geojson(...)`).
+   - Build complete 3D digital twins from place names (`from_place("Kadıköy, İstanbul")`), bounding boxes (`from_bbox(...)`), or GeoJSON / Overpass element payloads (`from_geojson(...)`).
 2. **Procedural Building Extrusions & 6 Roof Topologies:**
    - Infers building heights from `building:levels` ($levels \times 3.2\text{m}$) or `height` tags.
    - Generates procedural **Flat**, **Gabled**, **Hipped**, **Mansard**, **Pyramidal**, and **Skillion** roof geometries.
@@ -274,8 +274,9 @@ Theme names are matched exactly (case-insensitively), so pass the full name such
 | :--- | :--- | :--- |
 | `from_place` | `(place_name, theme="Editorial Paper", radius_meters=500.0, default_building_levels=3) -> CityModel3D` | Geocode a place name and build a city. |
 | `from_bbox` | `(bbox, theme="Editorial Paper", name="3D City Model", default_building_levels=3) -> CityModel3D` | Fetch OSM data for a `(min_lon, min_lat, max_lon, max_lat)` box. |
-| `from_geojson` | `(geojson_data, theme="Editorial Paper", name="Custom 3D City", default_building_levels=3) -> CityModel3D` | Build from a parsed element dictionary. |
+| `from_geojson` | `(geojson_data, theme="Editorial Paper", name="Custom 3D City", default_building_levels=3) -> CityModel3D` | Build from GeoJSON (dict or JSON string; properties act as OSM tags) or an Overpass `elements` dict. |
 | `generate_3d_city` | `(osm_data, bbox=None, theme="Editorial Paper", name="3D City Model", default_levels=3) -> CityModel3D` | Convert raw Overpass elements into a city model. |
+| `geojson_to_overpass` | `(geojson_data) -> dict` | Convert a GeoJSON Feature/FeatureCollection into Overpass-style `elements` (Points → nodes, lines and polygon outer rings → ways). |
 | `list_themes` / `list_theme_names` | `() -> list[str]` | List the 12 registered theme names. |
 | `get_theme` | `(name="Editorial Paper") -> ThemePalette` | Resolve a theme name (case-insensitive, with fallback). |
 | `geocode_place_name` | `(place_name, radius_meters=500.0) -> BoundingBox` | Nominatim geocoding to a bounding box. |
