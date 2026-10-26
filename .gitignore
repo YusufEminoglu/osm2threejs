@@ -38,3 +38,7 @@ build/
 .pytest_cache/
 .coverage
 htmlcov/
+
+# Locally generated demo outputs
+/alsancak_3d.*
+/galata_cyberpunk_3d.*
