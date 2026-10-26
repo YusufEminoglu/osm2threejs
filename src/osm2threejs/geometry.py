@@ -479,5 +479,5 @@ def generate_3d_city(
         parks=parks,
         trees=trees,
         theme=palette,
-        metadata={"generator": "osm2threejs-sdk v0.12.1"},
+        metadata={"generator": "osm2threejs-sdk v0.12.2"},
     )

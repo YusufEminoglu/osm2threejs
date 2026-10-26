@@ -8,7 +8,7 @@ from __future__ import annotations
 import json
 from typing import Any
 
-__version__ = "0.12.1"
+__version__ = "0.12.2"
 __author__ = "Yusuf Eminoğlu"
 
 from .billboard_lod_manager import (

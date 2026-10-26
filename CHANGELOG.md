@@ -3,6 +3,8 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+
+## [0.12.2] - 2026-10-26
 ### Added
 - Public API, edge-case, and error-path test suite covering top-level helpers, fetcher caching/geocoding, CLI paths, weather variants, roof fallbacks, and exporter edge cases.
 - Complete docstrings and type annotations across every function and method in `src/`.
@@ -17,6 +19,7 @@ All notable changes to this project will be documented in this file.
 - Corrected the roof-topology and export-format descriptions in the README, and aligned the documented CLI theme names with the real theme catalog.
 
 ### Changed
+- PyPI metadata: a plain-language summary, search keywords that match what users look for, and a working issue tracker link (GitHub issues; the GitLab issues page returned 404).
 - README now documents installation, `dev`/`geo` extras, feature modules, and a public API reference table.
 - `pyproject.toml` declares SPDX license metadata with `license-files` and a modern setuptools build requirement; hard-coded SDK version strings updated to 0.12.1.
 

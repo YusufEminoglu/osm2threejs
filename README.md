@@ -1,7 +1,3 @@
-<p align="center">
-  <img src="https://geophilo.com/assets/sdk_icons/osm2threejs_sdk.svg" alt="An OpenStreetMap study area rising into a procedural 3D city and recolouring through curated looks as the sun crosses the sky" width="100%">
-</p>
-
 <div align="center">
 
 <a href="https://geophilo.com/">
@@ -14,52 +10,14 @@
 [![PyPI version](https://img.shields.io/pypi/v/osm2threejs.svg?color=38bdf8)](https://pypi.org/project/osm2threejs/)
 [![Python version support](https://img.shields.io/pypi/pyversions/osm2threejs.svg?color=10b981)](https://pypi.org/project/osm2threejs/)
 [![Documentation](https://img.shields.io/badge/docs-GEOPHILO-10b981.svg)](https://geophilo.com/osm2threejs/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/YusufEminoglu/osm2threejs/blob/main/LICENSE)
 [![Code style: Ruff](https://img.shields.io/badge/code%20style-ruff-D7FF64.svg)](https://docs.astral.sh/ruff/)
 
-**Pure-Python Headless 3D City Generator from OpenStreetMap into Three.js WebGL & 3D Assets.**
+**Generate 3D city models from OpenStreetMap in pure Python: interactive Three.js HTML, glTF/GLB, OBJ, DXF and 3D GeoJSON.**
 
-[📖 **Open Interactive Web Manual**](https://geophilo.com/osm2threejs/) • [📦 **PyPI Package**](https://pypi.org/project/osm2threejs/) • [🐛 **Issue Tracker**](https://gitlab.com/geospacephilo/osm2threejs/-/issues)
+[📖 **Open Interactive Web Manual**](https://geophilo.com/osm2threejs/) • [📦 **PyPI Package**](https://pypi.org/project/osm2threejs/) • [💻 **GitHub**](https://github.com/YusufEminoglu/osm2threejs) • [🐛 **Issue Tracker**](https://github.com/YusufEminoglu/osm2threejs/issues)
 
 </div>
-
----
-
-## 🌟 Overview
-
-**osm2threejs** is a pure-Python, zero-C-dependency geospatial engine that turns OpenStreetMap data into publication-ready, interactive **60 FPS Three.js 3D WebGL scenes**, **binary glTF/GLB models**, **Wavefront OBJ meshes**, **AutoCAD DXF**, and **3D GeoJSON** layers.
-
-Designed from the ground up for urban planners, architects, game developers, GIS analysts, and data scientists, **osm2threejs** runs completely headless across **Jupyter Notebooks**, **Google Colab**, **FastAPI / Flask microservices**, **Docker containers**, and terminal **CLI** pipelines.
-
-<p align="center">
-  <img src="https://geophilo.com/assets/sdk_icons/osm2threejs_sdk.svg" alt="osm2threejs export pipeline from Overpass to GeoJSON and Three.js 3D models" width="100%">
-</p>
-
----
-
-## 🔬 Core Capabilities
-
-1. **Instant 3D City Generation:**
-   - Build complete 3D digital twins from place names (`from_place("Kadıköy, İstanbul")`), bounding boxes (`from_bbox(...)`), or GeoJSON / Overpass element payloads (`from_geojson(...)`).
-2. **Procedural Building Extrusions & 6 Roof Topologies:**
-   - Infers building heights from `building:levels` ($levels \times 3.2\text{m}$) or `height` tags.
-   - Generates procedural **Flat**, **Gabled**, **Hipped**, **Mansard**, **Pyramidal**, and **Skillion** roof geometries.
-3. **12 Curated Visual Themes:**
-   - *Editorial Paper, Cyberpunk Neon, Blueprint Architectural, Anime Pastel, Dark Glow, Warm Sand & Slate, Teal & Salmon, Light Purple & Black, Tinted Gray Teal, Cartoon Stylized, Monochrome Clay, Realistic Satellite*.
-4. **Multi-Format 3D Exporters:**
-   - 📄 **Standalone HTML:** Single-file self-contained Three.js 60 FPS viewer with orbit controls, sun elevation/azimuth sliders, and a camera-mode selector.
-   - 📦 **Binary glTF 2.0 (.glb):** Ready for direct import into **Blender**, **Unity**, **Unreal Engine**, and **WebXR**.
-   - 📐 **Wavefront OBJ:** Universal 3D mesh format with per-building extrusions and roof caps.
-   - 🗺️ **3D GeoJSON (PolygonZ / LineStringZ):** Standard OGC 3D vector geometry.
-   - 📐 **AutoCAD DXF 3D:** 3D Polyline CAD drawing for buildings and roads.
-5. **Procedural 3D Asset Modules:**
-   - Urban furniture, solar/shadow analysis, vegetation, road networks, bridges, tunnels, rail tracks, water surfaces, traffic, weather, LOD billboards, POI callouts, noise barriers, wind/solar farms, pedestrian plazas, helipads, and marinas — all generated as plain Python vertex/face buffers.
-6. **Interactive Jupyter Notebook / Google Colab Widget:**
-   - Direct inline 3D visualization inside notebook cells via `city.show()` or `_repr_html_()`.
-7. **Smart Disk Cache & Multi-Mirror Resilience:**
-   - SHA-256 disk cache with 7-day TTL and automatic failover across 3 Overpass mirrors.
-
----
 
 ## 📦 Installation
 
@@ -86,9 +44,66 @@ pip install -e ".[dev]"
 
 > **Note:** the `geo` extra installs optional downstream GIS tools. The core engine itself never imports Shapely or GeoPandas and works without them.
 
+## ⚡ Quickstart (runs offline)
+
+```python
+import osm2threejs as o3
+
+# One 4-storey building and one street as plain GeoJSON (properties act as OSM tags)
+geojson = {"type": "FeatureCollection", "features": [
+    {"type": "Feature", "properties": {"building": "yes", "building:levels": "4"},
+     "geometry": {"type": "Polygon", "coordinates": [[[29.0, 41.0], [29.0004, 41.0], [29.0004, 41.0003], [29.0, 41.0003], [29.0, 41.0]]]}},
+    {"type": "Feature", "properties": {"highway": "residential", "name": "Demo Street"},
+     "geometry": {"type": "LineString", "coordinates": [[28.9995, 40.9998], [29.001, 40.9998]]}},
+]}
+
+city = o3.from_geojson(geojson, theme="Cyberpunk Neon", name="Demo Block")
+print(f"{city.building_count} building, {city.road_count} road, {city.total_road_km:.2f} km")
+# 1 building, 1 road, 0.13 km
+city.to_html("demo_city.html")  # open in a browser: interactive Three.js scene
+city.to_glb("demo_city.glb")    # Blender / Unity / Unreal
+city.to_obj("demo_city.obj")
+city.to_dxf("demo_city.dxf")
+city.to_geojson("demo_city.geojson")
+```
+
+For real OpenStreetMap data use `o3.from_place("Kadıköy, İstanbul")` or `o3.from_bbox(...)` (needs internet).
+
 ---
 
-## 🚀 Quickstart & Python API
+## 🌟 Overview
+
+**osm2threejs** is a pure-Python, zero-C-dependency geospatial engine that turns OpenStreetMap data into publication-ready, interactive **60 FPS Three.js 3D WebGL scenes**, **binary glTF/GLB models**, **Wavefront OBJ meshes**, **AutoCAD DXF**, and **3D GeoJSON** layers.
+
+Designed from the ground up for urban planners, architects, game developers, GIS analysts, and data scientists, **osm2threejs** runs completely headless across **Jupyter Notebooks**, **Google Colab**, **FastAPI / Flask microservices**, **Docker containers**, and terminal **CLI** pipelines.
+
+---
+
+## 🔬 Core Capabilities
+
+1. **Instant 3D City Generation:**
+   - Build complete 3D digital twins from place names (`from_place("Kadıköy, İstanbul")`), bounding boxes (`from_bbox(...)`), or GeoJSON / Overpass element payloads (`from_geojson(...)`).
+2. **Procedural Building Extrusions & 6 Roof Topologies:**
+   - Infers building heights from `building:levels` (levels × 3.2 m) or `height` tags.
+   - Generates procedural **Flat**, **Gabled**, **Hipped**, **Mansard**, **Pyramidal**, and **Skillion** roof geometries.
+3. **12 Curated Visual Themes:**
+   - *Editorial Paper, Cyberpunk Neon, Blueprint Architectural, Anime Pastel, Dark Glow, Warm Sand & Slate, Teal & Salmon, Light Purple & Black, Tinted Gray Teal, Cartoon Stylized, Monochrome Clay, Realistic Satellite*.
+4. **Multi-Format 3D Exporters:**
+   - 📄 **Standalone HTML:** Single-file self-contained Three.js 60 FPS viewer with orbit controls, sun elevation/azimuth sliders, and a camera-mode selector.
+   - 📦 **Binary glTF 2.0 (.glb):** Ready for direct import into **Blender**, **Unity**, **Unreal Engine**, and **WebXR**.
+   - 📐 **Wavefront OBJ:** Universal 3D mesh format with per-building extrusions and roof caps.
+   - 🗺️ **3D GeoJSON (PolygonZ / LineStringZ):** Standard OGC 3D vector geometry.
+   - 📐 **AutoCAD DXF 3D:** 3D Polyline CAD drawing for buildings and roads.
+5. **Procedural 3D Asset Modules:**
+   - Urban furniture, solar/shadow analysis, vegetation, road networks, bridges, tunnels, rail tracks, water surfaces, traffic, weather, LOD billboards, POI callouts, noise barriers, wind/solar farms, pedestrian plazas, helipads, and marinas — all generated as plain Python vertex/face buffers.
+6. **Interactive Jupyter Notebook / Google Colab Widget:**
+   - Direct inline 3D visualization inside notebook cells via `city.show()` or `_repr_html_()`.
+7. **Smart Disk Cache & Multi-Mirror Resilience:**
+   - SHA-256 disk cache with 7-day TTL and automatic failover across 3 Overpass mirrors.
+
+---
+
+## 🚀 More Examples & Python API
 
 ### 1. Build a 3D City from a Place Name
 
@@ -215,10 +230,6 @@ Theme names are matched exactly (case-insensitively), so pass the full name such
 
 ## 🎨 12 Curated Visual Themes
 
-<p align="center">
-  <img src="https://geophilo.com/assets/sdk_icons/osm2threejs_sdk.svg" alt="12 Curated Visual Themes Gallery for osm2threejs" width="100%">
-</p>
-
 | Theme Name | Style / Lighting | Walls | Roofs | Roadway | Water |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **Editorial Paper** | Warm Sunlight & Paper Tone | `#f4ede2` | `#c9b9a6` | `#7c5c43` | `#9ab8c2` |
@@ -336,10 +347,6 @@ All public generators accept plain Python sequences (lists/tuples) and return da
 
 ## 🚶 First-Person Pedestrian Walk Mode
 
-<p align="center">
-  <img src="https://geophilo.com/assets/sdk_icons/osm2threejs_sdk.svg" alt="A 1.85 metre walker moving through the street with the eye height marked at 1.73 metres" width="100%">
-</p>
-
 Walk Mode simulates human ground-level perception with realistic eye height (1.73m), dynamic movement velocity (1.8m/s), and real-time obstacle avoidance.
 
 ---
@@ -385,7 +392,7 @@ If you use **osm2threejs** in research, urban planning digital twins, or softwar
   title     = {{osm2threejs: Pure-Python 3D City Generator from OpenStreetMap into Three.js WebGL and 3D Assets}},
   year      = {2026},
   publisher = {PyPI - Python Package Index},
-  version   = {0.12.1},
+  version   = {0.12.2},
   url       = {https://gitlab.com/geospacephilo/osm2threejs}
 }
 ```
