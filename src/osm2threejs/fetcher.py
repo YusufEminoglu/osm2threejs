@@ -21,7 +21,7 @@ OVERPASS_MIRRORS = (
     "https://overpass.private.coffee/api/interpreter",
 )
 NOMINATIM_ENDPOINT = "https://nominatim.openstreetmap.org/search"
-DEFAULT_USER_AGENT = "osm2threejs-sdk/0.12.2 (https://gitlab.com/geospacephilo/osm2threejs)"
+DEFAULT_USER_AGENT = "osm2threejs-sdk/0.12.3 (https://github.com/YusufEminoglu/osm2threejs)"
 CACHE_TTL_SECONDS = 7 * 24 * 3600  # 1 week
 
 
