@@ -38,7 +38,7 @@ pip install "osm2threejs[dev]"
 For a local editable checkout:
 
 ```bash
-git clone https://gitlab.com/geospacephilo/osm2threejs.git
+git clone https://github.com/YusufEminoglu/osm2threejs.git
 cd osm2threejs
 pip install -e ".[dev]"
 ```
@@ -367,7 +367,7 @@ Walk Mode simulates human ground-level perception with realistic eye height (1.7
 
 ```bash
 # Clone the repository
-git clone https://gitlab.com/geospacephilo/osm2threejs.git
+git clone https://github.com/YusufEminoglu/osm2threejs.git
 cd osm2threejs
 
 # Install in editable mode with dev dependencies
@@ -395,7 +395,7 @@ If you use **osm2threejs** in research, urban planning digital twins, or softwar
   publisher = {Zenodo},
   version   = {0.12.2},
   doi       = {10.5281/zenodo.23677253},
-  url       = {https://gitlab.com/geospacephilo/osm2threejs}
+  url       = {https://github.com/YusufEminoglu/osm2threejs}
 }
 ```
 
