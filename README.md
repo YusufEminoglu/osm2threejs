@@ -8,6 +8,7 @@
 
 
 [![PyPI version](https://img.shields.io/pypi/v/osm2threejs.svg?color=38bdf8)](https://pypi.org/project/osm2threejs/)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23677253.svg)](https://doi.org/10.5281/zenodo.23677253)
 [![Python version support](https://img.shields.io/pypi/pyversions/osm2threejs.svg?color=10b981)](https://pypi.org/project/osm2threejs/)
 [![Documentation](https://img.shields.io/badge/docs-GEOPHILO-10b981.svg)](https://geophilo.com/osm2threejs/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/YusufEminoglu/osm2threejs/blob/main/LICENSE)
@@ -391,8 +392,9 @@ If you use **osm2threejs** in research, urban planning digital twins, or softwar
   author    = {Emino{\u{g}}lu, Yusuf},
   title     = {{osm2threejs: Pure-Python 3D City Generator from OpenStreetMap into Three.js WebGL and 3D Assets}},
   year      = {2026},
-  publisher = {PyPI - Python Package Index},
+  publisher = {Zenodo},
   version   = {0.12.2},
+  doi       = {10.5281/zenodo.23677253},
   url       = {https://gitlab.com/geospacephilo/osm2threejs}
 }
 ```
